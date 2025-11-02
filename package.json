@@ -2,7 +2,7 @@
   "name": "zvukolizer",
   "version": "1.0.0",
   "description": "",
-  "main": "src/main.tsx",
+  "main": "src/main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build"
