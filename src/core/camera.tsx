@@ -5,7 +5,7 @@ import * as THREE from "three";
  * @param width Width of screen-space.
  * @param height Height of screen-space.
  */
-export function core_camera(width, height) {
+export function core_camera(width: number, height: number) {
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     camera.position.z = 5; // set coordinate away from scene
 
