@@ -3,14 +3,15 @@ import * as THREE from "three";
 import vertexShader from "@/shaders/terra.vert?raw"
 import fragmentShader from "@/shaders/terra.frag?raw"
 
-import { Zvukolizer } from "@/objects/zvukolizer";
+import { Visual } from "@/objects/visual";
+import { Media } from "@/utils/device/media";
 
-export class Gaia extends Zvukolizer {
+export class Gaia extends Visual {
     private icosahedronMeshes: THREE.Mesh[];
     private readonly lineMesh: THREE.Line;
 
-    constructor(renderer: THREE.WebGLRenderer, path: string) {
-        super(renderer, path);
+    constructor(renderer: THREE.WebGLRenderer, device: Media) {
+        super(renderer, device);
 
         this.icosahedronMeshes = [
             this.icosahedron(2, 1, 0.33),
@@ -51,9 +52,9 @@ export class Gaia extends Zvukolizer {
     }
 
     private getRangeValue(minHz: number, maxHz: number): number {
-        const data = this.analyser.getFrequencyData();
-        const sampleRate = this.analyser.analyser.context.sampleRate;
-        const fftSize = this.analyser.analyser.fftSize;
+        const data = this.getAnalyser().getFrequencyData();
+        const sampleRate = this.getAnalyser().analyser.context.sampleRate;
+        const fftSize = this.getAnalyser().analyser.fftSize;
 
         let sum = 0;
         let count = 0;

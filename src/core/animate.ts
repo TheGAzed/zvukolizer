@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { Zvukolizer } from "@/objects/zvukolizer";
+import { Visual } from "@/objects/visual";
 
-export function core_animate(renderer: THREE.WebGLRenderer, object: Zvukolizer) {
+export function core_animate(renderer: THREE.WebGLRenderer, object: Visual) {
     requestAnimationFrame(() => core_animate(renderer, object));
 
     object.animate();

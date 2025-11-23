@@ -3,7 +3,7 @@
 <html lang="en">
     <head id="head">
         <meta charset="UTF-8">
-        <title>Zvukolizer</title>
+        <title>Visualiser</title>
         <link rel="stylesheet" href="src/styles.css">
     </head>
 
@@ -14,7 +14,7 @@
         </div>
 
         <header id="header" class="flex flex-col justify-center h-20 items-center">
-            <h1 id="title" class="text-white text-4xl">ZVUKOLIZER</h1>
+            <h1 id="title" class="text-white text-4xl font-bold">ZVUKOLIZER</h1>
             <h2 id="subtitle" class="text-white text-2xl">[GAIA] Joy Division - Disorder</h2>
         </header>
 
@@ -25,43 +25,43 @@
         <footer id="footer" class="flex justify-center h-20 items-center">
             <form id="main-form" class="flex gap-4">
                 <button id="play-button" name="play" class="grid items-center h-fit aspect-square gap-2 p-3 border-2 border-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <svg class="w-6 h-6 text-gray-100">
+                    <svg id="play" class="w-6 h-6 text-gray-100">
                         <use xlink:href="/icons/play.svg"></use>
                     </svg>
                 </button>
 
                 <button id="song-button" name="song" class="grid items-center h-fit aspect-square gap-2 p-3 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <svg class="w-6 h-6">
+                    <svg id="song" class="w-6 h-6">
                         <use xlink:href="/icons/music.svg"></use>
                     </svg>
                 </button>
 
                 <button id="list-button" name="list" class="grid items-center h-fit aspect-square gap-2 p-3 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <svg class="w-6 h-6">
+                    <svg id="list" class="w-6 h-6">
                         <use xlink:href="/icons/list-music.svg"></use>
                     </svg>
                 </button>
 
                 <button id="mic-button" name="mic" class="grid items-center h-fit aspect-square gap-2 p-3 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <svg class="w-6 h-6">
+                    <svg id="mic" class="w-6 h-6">
                         <use xlink:href="/icons/mic-vocal.svg"></use>
                     </svg>
                 </button>
 
                 <button id="midi-button" name="midi" class="grid items-center h-fit aspect-square gap-2 p-3 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <svg class="w-6 h-6">
+                    <svg id="midi" class="w-6 h-6">
                         <use xlink:href="/icons/keyboard-music.svg"></use>
                     </svg>
                 </button>
 
                 <button id="left-button" name="left" class="grid items-center h-fit aspect-square gap-2 p-3 border-2 border-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <svg class="w-6 h-6 text-gray-100">
+                    <svg id="left" class="w-6 h-6 text-gray-100">
                         <use xlink:href="/icons/chevron-left.svg"></use>
                     </svg>
                 </button>
 
                 <button id="right-button" name="right" class="grid items-center h-fit aspect-square gap-2 p-3 border-2 border-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <svg class="w-6 h-6 text-gray-100">
+                    <svg id="right" class="w-6 h-6 text-gray-100">
                         <use xlink:href="/icons/chevron-right.svg"></use>
                     </svg>
                 </button>
