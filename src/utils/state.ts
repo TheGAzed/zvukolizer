@@ -1,223 +1,165 @@
-import * as THREE from "three";
+import { Context } from "@/utils/context"
+
 import { Media } from "@/utils/device/media";
-import { DemoMedia } from "@/utils/device/demo-media";
-import { FileMedia } from "@/utils/device/file-media";
-import { Visual } from "@/objects/visual";
-import { Gaia } from "@/objects/gaia";
+import { DemoMedia } from "@/utils/device/player/single/demo-media";
+import { FileMedia } from "@/utils/device/player/single/file-media";
 
-abstract class State<M extends Media> {
-    protected context: Context;
-    public media: M;
-
-    constructor(context: Context, media: M) {
-        this.context = context;
-        this.media = media;
-    }
-
-    public abstract onHome(): void;
-    public abstract onFile(filepath: string): void;
-    public abstract onFolder(directory: string): void;
-    public abstract onMic(): void;
-    public abstract onMIDI(): void;
-
-    public abstract entry(): void;
-    public abstract exit(): void;
+interface StateEdges {
+    onFile(event: Event): void;
+    onFolder(directory: string): void;
+    onMic(): void;
+    onMIDI(): void;
 }
 
-export class HomeState extends State<DemoMedia> {
-    constructor(context: Context, media: DemoMedia) {
-        super(context, media);
+export abstract class State<M extends Media> implements StateEdges {
+    private readonly context: Context;
+    private readonly media: M;
+
+    protected constructor(context: Context, media: M) {
+        this.context = context;
+        this.media = media;
+
+        context.getSubmit().innerHTML = ""; // clear form inner html
+        context.getSubmit().innerHTML = media.getHtmlControls();
     }
 
-    public onHome(): void {
+    onFile(event: Event): void {
+        const input = event.target as HTMLInputElement;
+
+        const file = input.files!.item(0);
+        if (!file) return;
+
+        console.log("Selected audio file:", file.name);
+        this.context.setState(new FileState(this.context, URL.createObjectURL(file)));
     }
 
-    public onFile(filepath: string): void {
-        const listener = this.context.getListener();
-        this.context.setState(new FileState(this.context, new FileMedia(listener, filepath)));
+    onFolder(directory: string): void {
+        this.context.setState(new FolderState(this.context));
     }
 
-    public onFolder(directory: string): void {
+    onMic(): void {
+        this.context.setState(new MicrophoneState(this.context));
     }
 
-    public onMic(): void {
-    }
-
-    public onMIDI(): void {
+    onMIDI(): void {
+        this.context.setState(new MIDIState(this.context));
     }
 
     public entry(): void {
-        console.log("Home state entry.");
-
-        const form = document.getElementById("main-form")!;
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
-
-            this.context.getState().media.togglePlay();
-
-            const submitter = (e as SubmitEvent).submitter as HTMLElement;
-            const useEl = submitter.querySelector("use") as SVGUseElement | null;
-            if (!useEl) return;
-
-            const current = useEl.getAttribute("xlink:href");
-            useEl.setAttribute("xlink:href", current === "/icons/play.svg" ? "/icons/pause.svg" : "/icons/play.svg");
-        });
-
-        document.getElementById("loading-screen")?.remove();
+        console.log(this.toString() + " state entry.");
     }
 
     public exit(): void {
-        console.log("Home state exit.");
+        console.log(this.toString() + " state exit.");
+
+        const load = document.getElementById("loading-screen")!;
+        load.classList.toggle("hidden");
+        load.classList.toggle("fixed");
+    }
+
+    public handleForm(event: Event): void {
+        this.media.handleControls(event);
+    }
+
+    public abstract toString(): string;
+}
+
+export class DemoState extends State<DemoMedia> {
+    constructor(context: Context) {
+        const media = new DemoMedia(context);
+        super(context, media);
+    }
+
+    public toString(): string {
+        return "Home";
+    }
+
+    override entry(): void {
+        super.entry();
+    }
+
+    override exit(): void {
+        super.exit();
     }
 }
 
 class FileState extends State<FileMedia> {
-    constructor(context: Context, media: FileMedia) {
-        super(context, media);
+    constructor(context: Context, filepath: string) {
+        super(context, new FileMedia(context, filepath));
     }
 
-    public onHome(): void {
-        const listener = this.context.getListener();
-        this.context.setState(new HomeState(this.context, new DemoMedia(listener)));
+    public toString(): string {
+        return "File";
     }
 
-    public onFile(filepath: string): void {
+    override entry(): void {
+        super.entry();
     }
 
-    public onFolder(): void {
-    }
-
-    public onMic(): void {
-    }
-
-    public onMIDI(): void {
-    }
-
-    public entry(): void {
-        console.log("Home state entry.");
-    }
-
-    public exit(): void {
-        console.log("Home state exit.");
+    override exit(): void {
+        super.exit();
     }
 }
 
 class FolderState extends State<DemoMedia> {
-    public onHome(): void {
+    constructor(context: Context) {
+        const media = new DemoMedia(context);
+        super(context, media);
     }
 
-    public onFile(filepath: string): void {
+    public toString(): string {
+        return "Folder";
     }
 
-    public onFolder(): void {
+    override entry(): void {
+        super.entry();
+        console.log("Folder state exit.");
     }
 
-    public onMic(): void {
-    }
-
-    public onMIDI(): void {
-    }
-
-    public entry(): void {
-        console.log("Home state entry.");
-    }
-
-    public exit(): void {
-        console.log("Home state exit.");
+    override exit(): void {
+        super.exit();
+        console.log("Folder state exit.");
     }
 }
 
-class MicState extends State<DemoMedia> {
-    public onHome(): void {
+class MicrophoneState extends State<DemoMedia> {
+    constructor(context: Context) {
+        const media = new DemoMedia(context);
+        super(context, media);
     }
 
-    public onFile(filepath: string): void {
+    public toString(): string {
+        return "Mic";
     }
 
-    public onFolder(): void {
+    override entry(): void {
+        super.entry();
+        console.log("Mic state exit.");
     }
 
-    public onMic(): void {
-    }
-
-    public onMIDI(): void {
-    }
-
-    public entry(): void {
-        console.log("Home state entry.");
-    }
-
-    public exit(): void {
-        console.log("Home state exit.");
+    override exit(): void {
+        super.exit();
+        console.log("Mic state exit.");
     }
 }
 
 class MIDIState extends State<DemoMedia> {
-    public onHome(): void {
+    constructor(context: Context) {
+        const media = new DemoMedia(context);
+        super(context, media);
     }
 
-    public onFile(filepath: string): void {
+    public toString(): string {
+        return "MIDI";
     }
 
-    public onFolder(): void {
+    override entry(): void {
+        super.entry();
+        console.log("MIDI state exit.");
     }
 
-    public onMic(): void {
-    }
-
-    public onMIDI(): void {
-    }
-
-    public entry(): void {
-        console.log("Home state entry.");
-    }
-
-    public exit(): void {
-        console.log("Home state exit.");
-    }
-}
-
-export class Context {
-    private state: State<Media>;
-    private readonly visuals: Array<new (...args: any[]) => Visual>;
-    private index: number = 0;
-    private readonly listener: THREE.AudioListener;
-    private renderer: THREE.WebGLRenderer;
-
-    constructor(renderer: THREE.WebGLRenderer, listener: THREE.AudioListener) {
-        this.listener = listener;
-        this.renderer = renderer;
-        this.state = new HomeState(this, new DemoMedia(this.listener));
-        this.state.entry();
-
-        this.visuals = [
-            Gaia,
-        ];
-    }
-
-    public setState(state: State<Media>) {
-        this.state.exit();
-        this.state = state;
-        this.state.entry();
-    }
-
-    public getState(): State<Media> {
-        return this.state;
-    }
-
-    public getListener(): THREE.AudioListener {
-        return this.listener;
-    }
-
-    public nextVisual() {
-        this.index = this.index + 1 % this.visuals.length;
-    }
-
-    public prevVisual() {
-        this.index = this.index == 0 ? this.visuals.length - 1 : this.index - 1;
-    }
-
-    public getVisual(): Visual {
-        return new this.visuals[this.index](this.renderer, this.state.media);
+    override exit(): void {
+        super.exit();
+        console.log("MIDI state exit.");
     }
 }

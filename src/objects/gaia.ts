@@ -1,17 +1,17 @@
 import * as THREE from "three";
 
-import vertexShader from "@/shaders/terra.vert?raw"
-import fragmentShader from "@/shaders/terra.frag?raw"
+import vertexShader from "@/shaders/gaia.vert?raw"
+import fragmentShader from "@/shaders/gaia.frag?raw"
 
 import { Visual } from "@/objects/visual";
-import { Media } from "@/utils/device/media";
+import { Context } from "@/utils/state";
 
 export class Gaia extends Visual {
     private icosahedronMeshes: THREE.Mesh[];
     private readonly lineMesh: THREE.Line;
 
-    constructor(renderer: THREE.WebGLRenderer, device: Media) {
-        super(renderer, device);
+    constructor(renderer: THREE.WebGLRenderer, context: Context) {
+        super(renderer, context);
 
         this.icosahedronMeshes = [
             this.icosahedron(2, 1, 0.33),
@@ -26,7 +26,7 @@ export class Gaia extends Visual {
         this.scene.add(this.lineMesh);
     }
 
-    public toString(): string {
+    toString(): string {
         return "gaia";
     }
 

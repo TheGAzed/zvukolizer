@@ -13,6 +13,11 @@ declare module "*.glsl?raw" {
     export default value;
 }
 
+declare module '*.html?raw' {
+    const content: string;
+    export default content;
+}
+
 declare module "*.vert";
 declare module "*.frag";
 declare module "*.glsl";
