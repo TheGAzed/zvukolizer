@@ -7,3 +7,4 @@
 - [An Introduction to 3D Graphics on the Web](https://www.youtube.com/watch?v=7eDGJ5okDGw&)
 - [The State Pattern Explained and Implemented in Java | Behavioral Design Patterns | Geekific
   ](https://www.youtube.com/watch?v=abX4xzaAsoc)
+- [How to make a Music Player HTML CSS And JavaScript](https://www.youtube.com/watch?v=APjb5Er03UE)
