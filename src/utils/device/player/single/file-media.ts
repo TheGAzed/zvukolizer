@@ -5,8 +5,14 @@ import { systems_loader } from "@/systems/audio/loader";
 import { systems_analyzer } from "@/systems/audio/analyzer";
 
 export class FileMedia extends SinglePlayer {
-    constructor(context: Context, filepath: string) {
-        super(context, filepath);
+    private readonly context: Context;
+    private readonly filename: string;
+
+    constructor(context: Context, file: File) {
+        super(context, URL.createObjectURL(file));
+
+        this.context = context;
+        this.filename = file.name;
     }
 
     protected initAnalyser(): THREE.AudioAnalyser {
@@ -22,8 +28,15 @@ export class FileMedia extends SinglePlayer {
 
             this.sliderControls();
             this.toggleLoadingScreen();
+            this.updateHeading();
         })
 
         return systems_analyzer(this.getSound());
+    }
+
+    public updateHeading(): void {
+        const h2 = document.getElementById("subtitle")! as HTMLHeadingElement;
+        const name = this.filename;
+        h2.textContent = "[" + this.context.getVisual().toString().toUpperCase() + "] " + name;
     }
 }

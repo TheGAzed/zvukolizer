@@ -11,4 +11,6 @@ export abstract class Media {
     public abstract getSound(): THREE.Audio;
     public abstract getHtmlControls(): string;
     public abstract handleControls(event: Event): void;
+    public abstract updateHeading(): void;
+    public abstract destructor(): void;
 }

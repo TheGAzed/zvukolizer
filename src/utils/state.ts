@@ -19,8 +19,8 @@ export abstract class State<M extends Media> implements StateEdges {
         this.context = context;
         this.media = media;
 
-        context.getSubmit().innerHTML = ""; // clear form inner html
-        context.getSubmit().innerHTML = media.getHtmlControls();
+        context.getForm().innerHTML = ""; // clear form inner html
+        context.getForm().innerHTML = media.getHtmlControls();
     }
 
     onFile(event: Event): void {
@@ -29,8 +29,7 @@ export abstract class State<M extends Media> implements StateEdges {
         const file = input.files!.item(0);
         if (!file) return;
 
-        console.log("Selected audio file:", file.name);
-        this.context.setState(new FileState(this.context, URL.createObjectURL(file)));
+        this.context.setState(new FileState(this.context, file));
     }
 
     onFolder(directory: string): void {
@@ -45,6 +44,10 @@ export abstract class State<M extends Media> implements StateEdges {
         this.context.setState(new MIDIState(this.context));
     }
 
+    public getMedia(): M {
+        return this.media;
+    }
+
     public entry(): void {
         console.log(this.toString() + " state entry.");
     }
@@ -55,6 +58,8 @@ export abstract class State<M extends Media> implements StateEdges {
         const load = document.getElementById("loading-screen")!;
         load.classList.toggle("hidden");
         load.classList.toggle("fixed");
+
+        this.media.destructor();
     }
 
     public handleForm(event: Event): void {
@@ -84,8 +89,8 @@ export class DemoState extends State<DemoMedia> {
 }
 
 class FileState extends State<FileMedia> {
-    constructor(context: Context, filepath: string) {
-        super(context, new FileMedia(context, filepath));
+    constructor(context: Context, file: File) {
+        super(context, new FileMedia(context, file));
     }
 
     public toString(): string {

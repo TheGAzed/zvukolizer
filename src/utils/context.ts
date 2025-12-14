@@ -5,43 +5,52 @@ import { systems_listener } from "@/systems/audio/listener";
 import { core_renderer } from "@/core/renderer";
 import { Gaia } from "@/objects/gaia";
 import { DemoState, State } from "@/utils/state";
+import { Tartarus } from "@/objects/tartarus";
 
 export class Context {
-    private readonly listener: THREE.AudioListener;
-    private readonly visuals: Visual[];
-    private readonly renderer: THREE.WebGLRenderer;
-    private readonly submit: HTMLFormElement;
+    private readonly listener: THREE.AudioListener; // audio listener
+    private readonly visuals: Visual[]; // array of implemented visualisers
+    private readonly renderer: THREE.WebGLRenderer; // main and only renderer
+    private readonly form: HTMLFormElement; // controls form
 
-    private state: State<Media>;
-    private index: number = 0;
+    private state: State<Media>; // current state
+    private index: number = 0; // index fo currently active visualiser
 
     constructor() {
-        this.submit = document.getElementsByTagName("form").item(0)!;
-        this.listener = systems_listener();
-        this.state = new DemoState(this);
+        // get form of audio controls
+        this.form = document.getElementsByTagName("form").item(0)!;
 
-        this.renderer = core_renderer();
+        this.listener = systems_listener(); // generate single systems audio listener
+        this.state = new DemoState(this); // set demo state as initial state
 
+        this.renderer = core_renderer(); // create core renderer
+
+        // add implemented visualisers
         this.visuals = [
-            new Gaia(this.renderer, this),
+            new Tartarus(this),
+            new Gaia(this),
         ];
 
-        this.state.entry();
+        this.state.entry(); // enter initial state
 
-        (window as any).context = this;
+        (window as any).context = this; // make this context available globally for index.html
     }
 
-    public getSubmit() {
-        return this.submit;
+    public getForm() {
+        return this.form;
     }
 
     public animate(): void {
         requestAnimationFrame(() => this.animate());
 
-        const object = this.visuals[this.index];
+        const object = this.getVisual();
         object.animate();
 
-        this.renderer.render(object.scene, object.camera);
+        this.renderer.render(object.getScene(), object.getCamera());
+    }
+
+    public getVisual(): Visual {
+        return this.visuals[this.index];
     }
 
     public setState(state: State<Media>) {
@@ -59,11 +68,17 @@ export class Context {
         return this.listener;
     }
 
-    public nextVisual() {
+    public nextVisual(): void {
         this.index = (this.index + 1) % this.visuals.length;
+        this.state.getMedia().updateHeading();
     }
 
-    public prevVisual() {
+    public prevVisual(): void {
         this.index = this.index == 0 ? this.visuals.length - 1 : this.index - 1;
+        this.state.getMedia().updateHeading();
+    }
+
+    public getRenderer(): THREE.WebGLRenderer {
+        return this.renderer;
     }
 }

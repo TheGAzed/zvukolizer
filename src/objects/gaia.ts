@@ -4,14 +4,14 @@ import vertexShader from "@/shaders/gaia.vert?raw"
 import fragmentShader from "@/shaders/gaia.frag?raw"
 
 import { Visual } from "@/objects/visual";
-import { Context } from "@/utils/state";
+import { Context } from "@/utils/context";
 
 export class Gaia extends Visual {
     private icosahedronMeshes: THREE.Mesh[];
     private readonly lineMesh: THREE.Line;
 
-    constructor(renderer: THREE.WebGLRenderer, context: Context) {
-        super(renderer, context);
+    constructor(context: Context) {
+        super(context);
 
         this.icosahedronMeshes = [
             this.icosahedron(2, 1, 0.33),
@@ -21,9 +21,9 @@ export class Gaia extends Visual {
 
         this.lineMesh = this.line();
 
-        this.camera.rotateZ(Math.PI * (23.5 / 180));
-        this.icosahedronMeshes.forEach(mesh => { this.scene.add(mesh); });
-        this.scene.add(this.lineMesh);
+        this.getCamera().rotateZ(Math.PI * (23.5 / 180));
+        this.icosahedronMeshes.forEach(mesh => { this.getScene().add(mesh); });
+        this.getScene().add(this.lineMesh);
     }
 
     toString(): string {
@@ -44,7 +44,7 @@ export class Gaia extends Visual {
             material.uniforms.u_time.value = this.clock.getElapsedTime();
         }
 
-        this.scene.rotation.y += (Math.PI * (0.0005));
+        this.getScene().rotation.y += (Math.PI * (0.0002));
     }
 
     private getBinHz(index: number, sampleRate: number, fftSize: number): number {
