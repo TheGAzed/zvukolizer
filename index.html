@@ -20,7 +20,7 @@
 
         <main id="main" class="flex-1"></main>
 
-        <footer id="footer" class="flex flex-col justify-center items-center gap-4 mb-8">
+        <footer id="footer" class="flex flex-col justify-center items-center gap-4">
             <div id="main-form" class="flex w-100 justify-between">
                 <input title="Play Custom Song" id="song-button" name="song" type="file" class="hidden" accept="audio/*" onchange="context.getState().onFile(event)" />
                 <label for="song-button" class="flex justify-center items-center w-12 h-12 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
@@ -36,8 +36,8 @@
                     </svg>
                 </label>
 
-                <input title="Record Microphone" id="mic-button" name="mic" type="button" class="hidden" />
-                <label for="mic-button" class="flex justify-center items-center w-12 h-12 border-2 border-gray-100 bg-gray-100 rounded opacity-50">
+                <input title="Record Microphone" id="mic-button" name="mic" type="button" class="hidden" onclick="context.getState().onMic()" />
+                <label for="mic-button" class="flex justify-center items-center w-12 h-12 border-2  border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
                     <svg id="mic" class="w-6 h-6">
                         <use xlink:href="/icons/mic-vocal.svg"></use>
                     </svg>
@@ -65,7 +65,7 @@
                 </label>
             </div>
 
-            <form id="side-form" class="flex flex-col w-100 gap-4" onsubmit="context.getState().handleForm(event)">
+            <form id="side-form" class="flex flex-col w-100 h-30 mb-8 gap-4" onsubmit="context.getState().handleForm(event)">
                 <!-- Children Go Here -->
             </form>
         </footer>

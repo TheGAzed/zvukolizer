@@ -1,18 +1,18 @@
 import * as THREE from "three";
 
-import vertexShader from "@/shaders/tartarus.vert?raw"
-import fragmentShader from "@/shaders/tartarus.frag?raw"
+import vertexShader from "@/shaders/pontus.vert?raw"
+import fragmentShader from "@/shaders/pontus.frag?raw"
 
 import { Visual } from "@/objects/visual";
 import { Context } from "@/utils/context";
 
-export class Tartarus extends Visual {
+export class Pontus extends Visual {
     private readonly lineMeshes: THREE.Group = new THREE.Group();
     private readonly planeMeshes: THREE.Group = new THREE.Group();
-    private readonly lineCount: number = 48;
+    private readonly lineCount: number = 128;
     private readonly planeHeight: number = 3;
 
-    private readonly lineGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(10, 0.01, 0.001, 128);
+    private readonly lineGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(10, 0.001, 0.001, 128);
     private readonly planeGeometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(10, this.planeHeight, 128, 1);
 
     constructor(context: Context) {
@@ -47,18 +47,19 @@ export class Tartarus extends Visual {
 
             const data = this.getAnalyser().getFrequencyData();
             const frequencies: number[] = [
-                data[(((2 * i)) % data.length)] / 255,
-                data[(((2 * i) + 1) % data.length)] / 255,
+                data[i % data.length] / 255,
             ];
 
             const frequency = frequencies.reduce((s, a) => s + a, 0) / frequencies.length;
             const time = this.clock.getElapsedTime();
 
-            (line.material as THREE.ShaderMaterial).uniforms.u_frequency.value = frequency;
-            (line.material as THREE.ShaderMaterial).uniforms.u_time.value = time;
+            const lineMaterial = line.material as THREE.ShaderMaterial;
+            lineMaterial.uniforms.u_frequency.value = frequency;
+            lineMaterial.uniforms.u_time.value = time;
 
-            (plane.material as THREE.ShaderMaterial).uniforms.u_frequency.value = frequency;
-            (plane.material as THREE.ShaderMaterial).uniforms.u_time.value = time;
+            const planeMaterial = plane.material as THREE.ShaderMaterial;
+            planeMaterial.uniforms.u_frequency.value = frequency;
+            planeMaterial.uniforms.u_time.value = time;
         }
     }
 
@@ -102,6 +103,6 @@ export class Tartarus extends Visual {
     }
 
     public toString(): string {
-        return "Tartarus";
+        return "Pontus";
     }
 }

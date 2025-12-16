@@ -5,7 +5,7 @@ import { systems_listener } from "@/systems/audio/listener";
 import { core_renderer } from "@/core/renderer";
 import { Gaia } from "@/objects/gaia";
 import { DemoState, State } from "@/utils/state";
-import { Tartarus } from "@/objects/tartarus";
+import { Pontus } from "@/objects/pontus";
 
 export class Context {
     private readonly listener: THREE.AudioListener; // audio listener
@@ -27,7 +27,7 @@ export class Context {
 
         // add implemented visualisers
         this.visuals = [
-            new Tartarus(this),
+            new Pontus(this),
             new Gaia(this),
         ];
 

@@ -93,8 +93,7 @@ export abstract class Player extends Media {
     }
 
     public destructor(): void {
-        const sound = this.getSound();
-        sound.disconnect();
+        super.destructor();
 
         const slider = document.getElementById("playback")! as HTMLInputElement;
         slider.removeEventListener("input", () => {});

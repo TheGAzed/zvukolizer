@@ -27,16 +27,14 @@ export class FileMedia extends SinglePlayer {
             this.toggle(button);
 
             this.sliderControls();
-            this.toggleLoadingScreen();
             this.updateHeading();
+            this.toggleLoadingScreen();
         })
 
         return systems_analyzer(this.getSound());
     }
 
     public updateHeading(): void {
-        const h2 = document.getElementById("subtitle")! as HTMLHeadingElement;
-        const name = this.filename;
-        h2.textContent = "[" + this.context.getVisual().toString().toUpperCase() + "] " + name;
+        (document.getElementById("subtitle")! as HTMLHeadingElement).textContent = "[" + this.context.getVisual().toString().toUpperCase() + "] " + this.filename;
     }
 }

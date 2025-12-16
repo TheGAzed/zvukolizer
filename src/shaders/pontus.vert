@@ -192,7 +192,7 @@ void main() {
 
     vec3 newPosition = position;
     newPosition.y += cnoise(vec2((position.x) + u_offset, (u_time * 0.1)) * 50.0) * 0.025;
-    newPosition.y += cnoise(vec2((position.x) + u_offset, (u_time * 0.2)) * 1.0) * u_amplify * flattness;
+    newPosition.y += cnoise(vec2((position.x) + u_offset, (u_time * 0.1)) * 0.75) * u_amplify * flattness;
 
     gl_Position = projectionMatrix * viewMatrix * modelViewMatrix * vec4(newPosition, 1.0);
 }

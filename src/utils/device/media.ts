@@ -12,5 +12,7 @@ export abstract class Media {
     public abstract getHtmlControls(): string;
     public abstract handleControls(event: Event): void;
     public abstract updateHeading(): void;
-    public abstract destructor(): void;
+    public destructor(): void {
+        this.getSound().disconnect();
+    };
 }

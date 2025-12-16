@@ -3,10 +3,11 @@ import { Context } from "@/utils/context"
 import { Media } from "@/utils/device/media";
 import { DemoMedia } from "@/utils/device/player/single/demo-media";
 import { FileMedia } from "@/utils/device/player/single/file-media";
+import { Microphone } from "@/utils/device/microphone-media";
 
 interface StateEdges {
     onFile(event: Event): void;
-    onFolder(directory: string): void;
+    onFolder(event: Event): void;
     onMic(): void;
     onMIDI(): void;
 }
@@ -18,9 +19,6 @@ export abstract class State<M extends Media> implements StateEdges {
     protected constructor(context: Context, media: M) {
         this.context = context;
         this.media = media;
-
-        context.getForm().innerHTML = ""; // clear form inner html
-        context.getForm().innerHTML = media.getHtmlControls();
     }
 
     onFile(event: Event): void {
@@ -32,7 +30,7 @@ export abstract class State<M extends Media> implements StateEdges {
         this.context.setState(new FileState(this.context, file));
     }
 
-    onFolder(directory: string): void {
+    onFolder(event: Event): void {
         this.context.setState(new FolderState(this.context));
     }
 
@@ -50,6 +48,9 @@ export abstract class State<M extends Media> implements StateEdges {
 
     public entry(): void {
         console.log(this.toString() + " state entry.");
+
+        this.context.getForm().innerHTML = ""; // clear form inner html
+        this.context.getForm().innerHTML = this.media.getHtmlControls();
     }
 
     public exit(): void {
@@ -127,9 +128,9 @@ class FolderState extends State<DemoMedia> {
     }
 }
 
-class MicrophoneState extends State<DemoMedia> {
+class MicrophoneState extends State<Microphone> {
     constructor(context: Context) {
-        const media = new DemoMedia(context);
+        const media = new Microphone(context);
         super(context, media);
     }
 
