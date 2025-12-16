@@ -6,6 +6,8 @@ import { core_renderer } from "@/core/renderer";
 import { Gaia } from "@/objects/gaia";
 import { DemoState, State } from "@/utils/state";
 import { Pontus } from "@/objects/pontus";
+import { systems_sound } from "@/systems/audio/sound";
+import { systems_loader } from "@/systems/audio/loader";
 
 export class Context {
     private readonly listener: THREE.AudioListener; // audio listener
@@ -21,8 +23,6 @@ export class Context {
         this.form = document.getElementsByTagName("form").item(0)!;
 
         this.listener = systems_listener(); // generate single systems audio listener
-        this.state = new DemoState(this); // set demo state as initial state
-
         this.renderer = core_renderer(); // create core renderer
 
         // add implemented visualisers
@@ -31,7 +31,19 @@ export class Context {
             new Gaia(this),
         ];
 
-        this.state.entry(); // enter initial state
+        const sound = systems_sound(this.listener);
+        sound.name = "Joy Division - Disorder";
+
+        this.state = new DemoState(this, sound); // set demo state as initial state
+        this.state.entry();
+
+        const loader = systems_loader();
+        loader.load("/sound/disorder.mp3", (buffer) => {
+            sound.setBuffer(buffer).setLoop(true);
+            this.state.getMedia().initializer();
+
+            this.toggleLoading();
+        });
 
         (window as any).context = this; // make this context available globally for index.html
     }
@@ -55,7 +67,7 @@ export class Context {
 
     public setState(state: State<Media>) {
         this.state.exit();
-
+        console.log("here")
         this.state = state;
         this.state.entry();
     }
@@ -80,5 +92,11 @@ export class Context {
 
     public getRenderer(): THREE.WebGLRenderer {
         return this.renderer;
+    }
+
+    public toggleLoading(): void {
+        const load = document.getElementById("loading-screen")!;
+        load.classList.toggle("hidden");
+        load.classList.toggle("fixed");
     }
 }

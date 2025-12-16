@@ -182,17 +182,17 @@ float cnoise4(vec4 P) {
     return 2.2 * n_xyzw;
 }
 
+uniform float u_offset;
 uniform float u_frequency;
 uniform float u_time;
-uniform float u_amplify;
-uniform float u_offset;
 
 void main() {
+    float amplify = 1.0;
     float flattness = pow(1.0 - (abs(uv.x - 0.5) * 2.0), 2.5) * u_frequency;
 
     vec3 newPosition = position;
     newPosition.y += cnoise(vec2((position.x) + u_offset, (u_time * 0.1)) * 50.0) * 0.025;
-    newPosition.y += cnoise(vec2((position.x) + u_offset, (u_time * 0.1)) * 0.75) * u_amplify * flattness;
+    newPosition.y += cnoise(vec2((position.x) + u_offset, (u_time * 0.1)) * 0.75) * amplify * flattness;
 
-    gl_Position = projectionMatrix * viewMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
 }

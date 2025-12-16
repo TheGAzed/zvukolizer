@@ -3,25 +3,20 @@ import * as THREE from "three";
 import { Context } from "@/utils/context";
 import { Player } from "@/utils/device/player/player";
 
-import { systems_sound } from "@/systems/audio/sound";
 import { AudioAnalyser } from "three";
 
 import singlePlayer from "@/components/pages/single.html?raw"
+import { systems_analyzer } from "@/systems/audio/analyzer";
 
 export abstract class SinglePlayer extends Player {
     private readonly analyser: THREE.AudioAnalyser;
-    private readonly filepath: string;
     private readonly sound: THREE.Audio;
 
-    protected constructor(context: Context, filepath: string) {
-        super();
-
-        this.filepath = filepath;
-        this.sound = systems_sound(context.getListener());
-        this.analyser = this.initAnalyser();
+    constructor(context: Context, sound: THREE.Audio) {
+        super(context);
+        this.sound = sound;
+        this.analyser = systems_analyzer(sound);
     }
-
-    protected abstract initAnalyser(): THREE.AudioAnalyser;
 
     public getAnalyser(): AudioAnalyser {
         return this.analyser;
@@ -29,10 +24,6 @@ export abstract class SinglePlayer extends Player {
 
     public getSound(): THREE.Audio {
         return this.sound;
-    }
-
-    public getFilepath(): string {
-        return this.filepath;
     }
 
     public getHtmlControls(): string {
@@ -44,7 +35,7 @@ export abstract class SinglePlayer extends Player {
         const submitter = (event as SubmitEvent).submitter as HTMLButtonElement;
 
         if (submitter.name == "play") {
-            this.toggle(submitter);
+            this.toggle();
         }
     }
 }

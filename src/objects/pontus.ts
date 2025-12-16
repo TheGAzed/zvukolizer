@@ -12,24 +12,26 @@ export class Pontus extends Visual {
     private readonly lineCount: number = 128;
     private readonly planeHeight: number = 3;
 
-    private readonly lineGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(10, 0.001, 0.001, 128);
-    private readonly planeGeometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(10, this.planeHeight, 128, 1);
+    private readonly lineGeometry: THREE.BoxGeometry;
+    private readonly planeGeometry: THREE.PlaneGeometry;
 
     constructor(context: Context) {
         super(context);
 
-        const amplify = 1.5;
-        const height = 12.0;
+        this.lineGeometry = new THREE.BoxGeometry(5, 0.001, 0.001, 32);
+        this.planeGeometry = new THREE.PlaneGeometry(5, this.planeHeight, 32, 1);
+
+        const height = 6;
         const posZ = 0.001;
         for (let i = 0; i < this.lineCount; i++) {
-            const offset = i * 79;
+            const offset = i * 11;
 
-            const line: THREE.Mesh = this.line(amplify, offset);
+            const line = this.line(offset);
             line.position.y = (i * (height / this.lineCount)) - (height / 2);
             line.position.z = -(i * posZ);
             this.lineMeshes.add(line);
 
-            const plane = this.plane(amplify, offset);
+            const plane = this.plane(offset);
             plane.position.y = (i * (height / this.lineCount)) - ((height / 2) + (this.planeHeight / 2));
             plane.position.z = -(i * posZ);
             this.planeMeshes.add(plane);
@@ -46,11 +48,7 @@ export class Pontus extends Visual {
             const plane = this.planeMeshes.children[reverse] as THREE.Mesh;
 
             const data = this.getAnalyser().getFrequencyData();
-            const frequencies: number[] = [
-                data[i % data.length] / 255,
-            ];
-
-            const frequency = frequencies.reduce((s, a) => s + a, 0) / frequencies.length;
+            const frequency = data[i % data.length] / 256;
             const time = this.clock.getElapsedTime();
 
             const lineMaterial = line.material as THREE.ShaderMaterial;
@@ -63,13 +61,12 @@ export class Pontus extends Visual {
         }
     }
 
-    private line(amplify: number, offset: number): THREE.Mesh {
-        const mat = new THREE.ShaderMaterial({
+    private line(offset: number): THREE.Mesh {
+        const material = new THREE.ShaderMaterial({
             wireframe: true,
             uniforms: {
                 u_time: { value: 0.0 },
                 u_frequency: { value: 0.0 },
-                u_amplify: { value: amplify },
                 u_offset: { value: offset },
                 u_color: { value: new THREE.Color(0xFFFFFF) }
             },
@@ -77,18 +74,15 @@ export class Pontus extends Visual {
             fragmentShader: fragmentShader,
         });
 
-        const geo = this.lineGeometry;
-
-        return new THREE.Mesh(geo, mat);
+        return new THREE.Mesh(this.lineGeometry, material);
     }
 
-    private plane(amplify: number, offset: number): THREE.Mesh {
-        const mat = new THREE.ShaderMaterial({
+    private plane(offset: number): THREE.Mesh {
+        const material = new THREE.ShaderMaterial({
             side: THREE.DoubleSide,
             uniforms: {
                 u_time: { value: 0.0 },
                 u_frequency: { value: 0.0 },
-                u_amplify: { value: amplify },
                 u_offset: { value: offset },
                 u_color: { value: new THREE.Color(0x030712).convertLinearToSRGB() }
             },
@@ -97,9 +91,7 @@ export class Pontus extends Visual {
             fragmentShader: fragmentShader,
         });
 
-        const geo = this.planeGeometry;
-
-        return new THREE.Mesh(geo, mat);
+        return new THREE.Mesh(this.planeGeometry, material);
     }
 
     public toString(): string {

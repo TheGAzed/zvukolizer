@@ -5,14 +5,10 @@ export abstract class Player extends Media {
     private pauseTime = 0;
     private timeout?: NodeJS.Timeout = undefined;
 
-    protected toggle(button: HTMLButtonElement): void {
-        const sound = this.getSound();
+    protected toggle(): void {
+        this.getSound().isPlaying ? this.stop() : this.play();
 
-        sound.isPlaying ? this.stop() : this.play();
-
-        const label = document.querySelector(`label[for="${button.id}"]`)!;
-        const use = label.querySelector("use")!;
-
+        const use = document.querySelector(`label[for="play-button"]`)!.querySelector("use")!;
         const current = use.getAttribute("xlink:href");
         use.setAttribute("xlink:href", current === "/icons/play.svg" ? "/icons/pause.svg" : "/icons/play.svg");
     }
@@ -39,7 +35,7 @@ export abstract class Player extends Media {
         return playbackTime % sound.buffer!.duration;
     }
 
-    protected sliderControls(): void {
+    public initializer(): void {
         const sound = this.getSound();
 
         const slider = document.getElementById("playback")! as HTMLInputElement;
@@ -94,9 +90,6 @@ export abstract class Player extends Media {
 
     public destructor(): void {
         super.destructor();
-
-        const slider = document.getElementById("playback")! as HTMLInputElement;
-        slider.removeEventListener("input", () => {});
         clearInterval(this.timeout);
     }
 }

@@ -4,6 +4,10 @@ import { Media } from "@/utils/device/media";
 import { DemoMedia } from "@/utils/device/player/single/demo-media";
 import { FileMedia } from "@/utils/device/player/single/file-media";
 import { Microphone } from "@/utils/device/microphone-media";
+import { systems_loader } from "@/systems/audio/loader";
+import { systems_sound } from "@/systems/audio/sound";
+
+import * as THREE from "three";
 
 interface StateEdges {
     onFile(event: Event): void;
@@ -27,19 +31,51 @@ export abstract class State<M extends Media> implements StateEdges {
         const file = input.files!.item(0);
         if (!file) return;
 
-        this.context.setState(new FileState(this.context, file));
+        this.context.toggleLoading();
+
+        const sound = systems_sound(this.context.getListener());
+        sound.name = file.name;
+
+        const loader = systems_loader();
+        loader.load(URL.createObjectURL(file), (buffer) => {
+            sound.setBuffer(buffer).setLoop(true);
+            input.value = '';
+
+            const state = new FileState(this.context, sound);
+            this.context.setState(state);
+            state.getMedia().initializer();
+
+            this.context.toggleLoading();
+        }, undefined, (error) => {
+            console.log(error);
+            this.context.toggleLoading();
+        });
     }
 
     onFolder(event: Event): void {
-        this.context.setState(new FolderState(this.context));
+        this.context.setState(new FolderState(this.context, systems_sound(this.context.getListener())));
     }
 
     onMic(): void {
-        this.context.setState(new MicrophoneState(this.context));
+        this.context.toggleLoading();
+
+        const sound = systems_sound(this.context.getListener());
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+            sound.setMediaStreamSource(stream);
+
+            const state = new MicrophoneState(this.context, sound);
+            this.context.setState(state);
+            state.getMedia().initializer();
+
+            this.context.toggleLoading();
+        }).catch(error => {
+            console.error(error);
+            this.context.toggleLoading();
+        });
     }
 
     onMIDI(): void {
-        this.context.setState(new MIDIState(this.context));
+        this.context.setState(new MIDIState(this.context, systems_sound(this.context.getListener())));
     }
 
     public getMedia(): M {
@@ -48,18 +84,11 @@ export abstract class State<M extends Media> implements StateEdges {
 
     public entry(): void {
         console.log(this.toString() + " state entry.");
-
-        this.context.getForm().innerHTML = ""; // clear form inner html
-        this.context.getForm().innerHTML = this.media.getHtmlControls();
+        this.media.updateHeading();
     }
 
     public exit(): void {
         console.log(this.toString() + " state exit.");
-
-        const load = document.getElementById("loading-screen")!;
-        load.classList.toggle("hidden");
-        load.classList.toggle("fixed");
-
         this.media.destructor();
     }
 
@@ -71,101 +100,55 @@ export abstract class State<M extends Media> implements StateEdges {
 }
 
 export class DemoState extends State<DemoMedia> {
-    constructor(context: Context) {
-        const media = new DemoMedia(context);
+    constructor(context: Context, sound: THREE.Audio) {
+        const media = new DemoMedia(context, sound);
         super(context, media);
     }
 
     public toString(): string {
         return "Home";
     }
-
-    override entry(): void {
-        super.entry();
-    }
-
-    override exit(): void {
-        super.exit();
-    }
 }
 
 class FileState extends State<FileMedia> {
-    constructor(context: Context, file: File) {
-        super(context, new FileMedia(context, file));
+    constructor(context: Context, sound: THREE.Audio) {
+        super(context, new FileMedia(context, sound));
     }
 
     public toString(): string {
         return "File";
     }
-
-    override entry(): void {
-        super.entry();
-    }
-
-    override exit(): void {
-        super.exit();
-    }
 }
 
 class FolderState extends State<DemoMedia> {
-    constructor(context: Context) {
-        const media = new DemoMedia(context);
+    constructor(context: Context, sound: THREE.Audio) {
+        const media = new DemoMedia(context, sound);
         super(context, media);
     }
 
     public toString(): string {
         return "Folder";
     }
-
-    override entry(): void {
-        super.entry();
-        console.log("Folder state exit.");
-    }
-
-    override exit(): void {
-        super.exit();
-        console.log("Folder state exit.");
-    }
 }
 
 class MicrophoneState extends State<Microphone> {
-    constructor(context: Context) {
-        const media = new Microphone(context);
+    constructor(context: Context, sound: THREE.Audio) {
+        const media = new Microphone(context, sound);
         super(context, media);
     }
 
     public toString(): string {
         return "Mic";
     }
-
-    override entry(): void {
-        super.entry();
-        console.log("Mic state exit.");
-    }
-
-    override exit(): void {
-        super.exit();
-        console.log("Mic state exit.");
-    }
 }
 
 class MIDIState extends State<DemoMedia> {
-    constructor(context: Context) {
-        const media = new DemoMedia(context);
+    constructor(context: Context, sound: THREE.Audio) {
+        const media = new DemoMedia(context, sound);
         super(context, media);
     }
 
     public toString(): string {
         return "MIDI";
-    }
-
-    override entry(): void {
-        super.entry();
-        console.log("MIDI state exit.");
-    }
-
-    override exit(): void {
-        super.exit();
-        console.log("MIDI state exit.");
     }
 }
