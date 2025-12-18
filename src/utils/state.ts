@@ -8,8 +8,10 @@ import { systems_loader } from "@/systems/audio/loader";
 import { systems_sound } from "@/systems/audio/sound";
 
 import * as THREE from "three";
+import { EmptyMedia } from "@/utils/device/empty-media";
 
 interface StateEdges {
+    onDemo(): void;
     onFile(event: Event): void;
     onFolder(event: Event): void;
     onMic(): void;
@@ -23,6 +25,21 @@ export abstract class State<M extends Media> implements StateEdges {
     protected constructor(context: Context, media: M) {
         this.context = context;
         this.media = media;
+    }
+
+    onDemo() {
+        const loader = systems_loader();
+        const sound = systems_sound(this.context.getListener());
+        sound.name = "Joy Division - Disorder";
+
+        loader.load("/sound/disorder.mp3", (buffer) => {
+            sound.setBuffer(buffer).setLoop(true);
+
+            this.context.setState(new DemoState(this.context, sound));
+            this.context.toggleLoading();
+        }, undefined, (error) => {
+            console.log(error);
+        });
     }
 
     onFile(event: Event): void {
@@ -39,12 +56,9 @@ export abstract class State<M extends Media> implements StateEdges {
         const loader = systems_loader();
         loader.load(URL.createObjectURL(file), (buffer) => {
             sound.setBuffer(buffer).setLoop(true);
-            input.value = '';
+            input.value = ''; // remove file from input storage
 
-            const state = new FileState(this.context, sound);
-            this.context.setState(state);
-            state.getMedia().initializer();
-
+            this.context.setState(new FileState(this.context, sound));
             this.context.toggleLoading();
         }, undefined, (error) => {
             console.log(error);
@@ -62,11 +76,7 @@ export abstract class State<M extends Media> implements StateEdges {
         const sound = systems_sound(this.context.getListener());
         navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
             sound.setMediaStreamSource(stream);
-
-            const state = new MicrophoneState(this.context, sound);
-            this.context.setState(state);
-            state.getMedia().initializer();
-
+            this.context.setState(new MicrophoneState(this.context, sound));
             this.context.toggleLoading();
         }).catch(error => {
             console.error(error);
@@ -84,7 +94,6 @@ export abstract class State<M extends Media> implements StateEdges {
 
     public entry(): void {
         console.log(this.toString() + " state entry.");
-        this.media.updateHeading();
     }
 
     public exit(): void {
@@ -97,6 +106,17 @@ export abstract class State<M extends Media> implements StateEdges {
     }
 
     public abstract toString(): string;
+}
+
+export class InitialState extends State<EmptyMedia> {
+    constructor(context: Context) {
+        const media = new EmptyMedia(context);
+        super(context, media);
+    }
+
+    public toString(): string {
+        return "Initial";
+    }
 }
 
 export class DemoState extends State<DemoMedia> {

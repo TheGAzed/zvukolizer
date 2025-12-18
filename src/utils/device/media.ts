@@ -1,27 +1,41 @@
 import * as THREE from "three";
 import { Context } from "@/utils/context";
+import { systems_analyzer } from "@/systems/audio/analyzer";
 
 export abstract class Media {
     private readonly context: Context;
+    private readonly sound: THREE.Audio;
+    private readonly analyser: THREE.AudioAnalyser;
 
-    constructor(context: Context) {
+    constructor(context: Context, sound: THREE.Audio) {
+        this.sound = sound;
         this.context = context;
+        this.analyser = systems_analyzer(sound);
+
         context.getForm().innerHTML = ""; // clear form inner html
         context.getForm().innerHTML = this.getHtmlControls();
+
+        this.initializer();
+        this.updateHeading();
     }
 
     public getContext(): Context {
         return this.context;
     }
 
-    public abstract initializer(): void;
+    public getSound(): THREE.Audio {
+        return this.sound;
+    }
+
+    public  getAnalyser(): THREE.AudioAnalyser {
+        return this.analyser;
+    }
 
     public destructor(): void {
         this.getSound().disconnect();
     };
 
-    public abstract getAnalyser(): THREE.AudioAnalyser;
-    public abstract getSound(): THREE.Audio;
+    public abstract initializer(): void;
     public abstract getHtmlControls(): string;
     public abstract handleControls(event: Event): void;
     public abstract updateHeading(): void;

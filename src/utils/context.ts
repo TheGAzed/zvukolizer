@@ -4,10 +4,8 @@ import { Media } from "@/utils/device/media";
 import { systems_listener } from "@/systems/audio/listener";
 import { core_renderer } from "@/core/renderer";
 import { Gaia } from "@/objects/gaia";
-import { DemoState, State } from "@/utils/state";
+import { InitialState, State } from "@/utils/state";
 import { Pontus } from "@/objects/pontus";
-import { systems_sound } from "@/systems/audio/sound";
-import { systems_loader } from "@/systems/audio/loader";
 
 export class Context {
     private readonly listener: THREE.AudioListener; // audio listener
@@ -31,19 +29,9 @@ export class Context {
             new Gaia(this),
         ];
 
-        const sound = systems_sound(this.listener);
-        sound.name = "Joy Division - Disorder";
-
-        this.state = new DemoState(this, sound); // set demo state as initial state
+        this.state = new InitialState(this);
         this.state.entry();
-
-        const loader = systems_loader();
-        loader.load("/sound/disorder.mp3", (buffer) => {
-            sound.setBuffer(buffer).setLoop(true);
-            this.state.getMedia().initializer();
-
-            this.toggleLoading();
-        });
+        this.state.onDemo();
 
         (window as any).context = this; // make this context available globally for index.html
     }

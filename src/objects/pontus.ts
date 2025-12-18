@@ -9,7 +9,7 @@ import { Context } from "@/utils/context";
 export class Pontus extends Visual {
     private readonly lineMeshes: THREE.Group = new THREE.Group();
     private readonly planeMeshes: THREE.Group = new THREE.Group();
-    private readonly lineCount: number = 128;
+    private readonly lineCount: number = 64;
     private readonly planeHeight: number = 3;
 
     private readonly lineGeometry: THREE.BoxGeometry;
@@ -18,22 +18,23 @@ export class Pontus extends Visual {
     constructor(context: Context) {
         super(context);
 
-        this.lineGeometry = new THREE.BoxGeometry(5, 0.001, 0.001, 32);
-        this.planeGeometry = new THREE.PlaneGeometry(5, this.planeHeight, 32, 1);
+        this.lineGeometry = new THREE.BoxGeometry(5, 0.001, 0.001, 64);
+        this.planeGeometry = new THREE.PlaneGeometry(5, this.planeHeight, 64, 1);
 
         const height = 6;
         const posZ = 0.001;
         for (let i = 0; i < this.lineCount; i++) {
-            const offset = i * 11;
+            const offset = i * (Math.random() * this.lineCount);
 
             const line = this.line(offset);
-            line.position.y = (i * (height / this.lineCount)) - (height / 2);
-            line.position.z = -(i * posZ);
-            this.lineMeshes.add(line);
-
             const plane = this.plane(offset);
+
+            line.position.y = (i * (height / this.lineCount)) - (height / 2);
             plane.position.y = (i * (height / this.lineCount)) - ((height / 2) + (this.planeHeight / 2));
-            plane.position.z = -(i * posZ);
+
+            line.position.z = plane.position.z = -(i * posZ);
+
+            this.lineMeshes.add(line);
             this.planeMeshes.add(plane);
         }
 
