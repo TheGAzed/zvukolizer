@@ -8,8 +8,28 @@ html, body {
     height: 100%;
 }
 
-canvas {
-    display: block; /* removes inline gaps */
-    width: 100%;
-    height: 100%;
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+    background-color: white;
+    border-radius: 0;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    max-width: 0.75rem;
+    min-width: 0.75rem;
+    height: 0.75rem;
+    background: #030712;
+    cursor: pointer;
+}
+
+input[type=range]::-moz-range-thumb {
+    max-width: 0.75rem;
+    min-width: 0.75rem;
+    height: 0.75rem;
+    background: #030712;
+    cursor: pointer;
 }

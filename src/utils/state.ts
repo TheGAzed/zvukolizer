@@ -9,6 +9,7 @@ import { systems_sound } from "@/systems/audio/sound";
 
 import * as THREE from "three";
 import { EmptyMedia } from "@/utils/device/empty-media";
+import { FolderMedia } from "@/utils/device/player/folder-media";
 
 interface StateEdges {
     onDemo(): void;
@@ -67,7 +68,28 @@ export abstract class State<M extends Media> implements StateEdges {
     }
 
     onFolder(event: Event): void {
-        this.context.setState(new FolderState(this.context, systems_sound(this.context.getListener())));
+        const input = event.target as HTMLInputElement;
+        if (!input.files || !input.files.length) return;
+
+        this.context.toggleLoading();
+
+        const list: File[] = Array.from(input.files);
+        const file = list.pop()!;
+
+        const sound = systems_sound(this.context.getListener());
+        sound.name = file.name;
+
+        const loader = systems_loader();
+        loader.load(URL.createObjectURL(file), (buffer) => {
+            sound.setBuffer(buffer);
+            input.value = ''; // remove file from input storage
+
+            this.context.setState(new FolderState(this.context, sound, list));
+            this.context.toggleLoading();
+        }, undefined, (error) => {
+            console.log(error);
+            this.context.toggleLoading();
+        });
     }
 
     onMic(): void {
@@ -94,6 +116,7 @@ export abstract class State<M extends Media> implements StateEdges {
 
     public entry(): void {
         console.log(this.toString() + " state entry.");
+        this.media.initializer();
     }
 
     public exit(): void {
@@ -141,8 +164,8 @@ class FileState extends State<FileMedia> {
 }
 
 class FolderState extends State<DemoMedia> {
-    constructor(context: Context, sound: THREE.Audio) {
-        const media = new DemoMedia(context, sound);
+    constructor(context: Context, sound: THREE.Audio, others: File[]) {
+        const media = new FolderMedia(context, sound, others);
         super(context, media);
     }
 

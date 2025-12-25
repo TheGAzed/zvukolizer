@@ -1,7 +1,7 @@
 import { Player } from "@/utils/device/player/player";
 import singlePlayer from "@/components/pages/single.html?raw"
 
-export abstract class SinglePlayer extends Player {
+export abstract class SingleMedia extends Player {
     public getHtmlControls(): string {
         return singlePlayer;
     }

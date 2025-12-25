@@ -15,7 +15,6 @@ export abstract class Media {
         context.getForm().innerHTML = ""; // clear form inner html
         context.getForm().innerHTML = this.getHtmlControls();
 
-        this.initializer();
         this.updateHeading();
     }
 
@@ -35,10 +34,17 @@ export abstract class Media {
         this.getSound().disconnect();
     };
 
+    public updateHeading(): void {
+        document.getElementById("subtitle")!.textContent =
+            "[" +
+            this.getContext().getVisual().toString().toUpperCase() +
+            "] " +
+            this.getSound().name;
+    }
+
     public abstract initializer(): void;
     public abstract getHtmlControls(): string;
     public abstract handleControls(event: Event): void;
-    public abstract updateHeading(): void;
 
     protected abstract toggle(): void;
 }

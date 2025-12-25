@@ -5,7 +5,7 @@ import { systems_clock } from "@/systems/clock";
 import { Context } from "@/utils/context";
 
 export abstract class Visual {
-    private context: Context;
+    private readonly context: Context;
     protected clock: THREE.Clock;
 
     private readonly scene: THREE.Scene;

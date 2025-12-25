@@ -6,6 +6,7 @@ import { core_renderer } from "@/core/renderer";
 import { Gaia } from "@/objects/gaia";
 import { InitialState, State } from "@/utils/state";
 import { Pontus } from "@/objects/pontus";
+import { Aether } from "@/objects/aether";
 
 export class Context {
     private readonly listener: THREE.AudioListener; // audio listener
@@ -25,6 +26,7 @@ export class Context {
 
         // add implemented visualisers
         this.visuals = [
+            new Aether(this),
             new Pontus(this),
             new Gaia(this),
         ];
@@ -41,12 +43,12 @@ export class Context {
     }
 
     public animate(): void {
-        requestAnimationFrame(() => this.animate());
-
         const object = this.getVisual();
         object.animate();
 
         this.renderer.render(object.getScene(), object.getCamera());
+
+        requestAnimationFrame(() => this.animate());
     }
 
     public getVisual(): Visual {

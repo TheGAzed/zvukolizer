@@ -18,9 +18,9 @@
             <h2 id="subtitle" class="truncate w-100 text-white text-2xl text-center">[GAIA] Joy Division - Disorder</h2>
         </header>
 
-        <main id="main" class="flex-1"></main>
+        <main id="main" class="flex-1 min-h-0"></main>
 
-        <footer id="footer" class="flex flex-col justify-center items-center gap-4">
+        <footer id="footer" class="flex flex-col justify-between items-center h-54">
             <div id="main-form" class="flex w-100 justify-between">
                 <input title="Play Custom Song" id="song-button" name="song" type="file" class="hidden" accept="audio/*" onchange="context.getState().onFile(event)" />
                 <label for="song-button" class="flex justify-center items-center w-12 h-12 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
@@ -29,8 +29,8 @@
                     </svg>
                 </label>
 
-                <input title="Play Song Playlist" id="list-button" name="list" type="button" class="hidden" />
-                <label for="list-button" class="flex justify-center items-center w-12 h-12 border-2 border-gray-100 bg-gray-100 rounded opacity-50">
+                <input title="Play Song Playlist" id="list-button" name="list" type="file" class="hidden" accept="audio/*" onchange="context.getState().onFolder(event)"  multiple webkitdirectory mozdirectory />
+                <label for="list-button" class="flex justify-center items-center w-12 h-12 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
                     <svg id="list" class="w-6 h-6">
                         <use xlink:href="/icons/list-music.svg"></use>
                     </svg>

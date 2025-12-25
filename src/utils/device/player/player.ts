@@ -4,28 +4,41 @@ export abstract class Player extends Media {
     private startTime = 0;
     private pauseTime = 0;
     private timeout?: NodeJS.Timeout = undefined;
+    private slider: HTMLInputElement = document.getElementById("playback")! as HTMLInputElement;
 
     protected toggle(): void {
         this.getSound().isPlaying ? this.stop() : this.play();
-
-        const use = document.querySelector(`label[for="play-button"]`)!.querySelector("use")!;
-        const current = use.getAttribute("xlink:href");
-        use.setAttribute("xlink:href", current === "/icons/play.svg" ? "/icons/pause.svg" : "/icons/play.svg");
     }
 
-    private play(delay?: number): void {
+    protected resetPlayback(): void {
+        this.startTime = 0;
+        this.pauseTime = 0;
+
+        this.removeListener();
+        this.updateRange();
+        this.updateHeading();
+        this.addListener();
+    }
+
+    protected play(delay?: number): void {
         const sound = this.getSound();
 
         sound.offset = this.pauseTime;
         this.startTime = sound.context.currentTime - this.pauseTime;
         sound.play(delay);
+
+        const use = document.querySelector(`label[for="play-button"]`)!.querySelector("use")!;
+        use.setAttribute("xlink:href", "/icons/pause.svg");
     }
 
-    private stop(): void {
+    protected stop(): void {
         const sound = this.getSound();
 
         this.pauseTime = sound.context.currentTime - this.startTime;
         sound.stop();
+
+        const use = document.querySelector(`label[for="play-button"]`)!.querySelector("use")!;
+        use.setAttribute("xlink:href", "/icons/play.svg");
     }
 
     protected getPlaybackTime(): number {
@@ -36,44 +49,56 @@ export abstract class Player extends Media {
     }
 
     public initializer(): void {
-        const sound = this.getSound();
-
-        const slider = document.getElementById("playback")! as HTMLInputElement;
-        const duration = document.getElementById("duration-time")!;
-
-        slider.addEventListener("input", () => {
-            const wasPlaying = sound.isPlaying;
-            sound.stop();
-
-            const value = Number(slider.value);
-            sound.offset = value;
-
-            const current = document.getElementById("current-time")!;
-            current.textContent = this.timeFormat(value);
-
-            this.pauseTime = value;
-            this.startTime = sound.context.currentTime - value;
-
-            if (wasPlaying) {
-                sound.play();
-            }
-        });
-
-        const maximum = Math.ceil(sound.buffer!.duration);
-        slider.max = maximum.toString();
-        duration.textContent = this.timeFormat(maximum);
-
-        this.timeout = setInterval(() => this.updateSlider(slider), 1000);
+        this.updateRange();
+        this.addListener();
     }
 
-    private updateSlider(slider: HTMLInputElement): void {
+    private listener(event: Event): void {
+        const sound = this.getSound();
+        const wasPlaying = sound.isPlaying;
+        this.stop();
+
+        const value = Number(this.slider.value);
+        sound.offset = value;
+
+        const current = document.getElementById("current-time")!;
+        current.textContent = this.timeFormat(value);
+
+        this.pauseTime = value;
+        this.startTime = sound.context.currentTime - value;
+
+        if (wasPlaying) {
+            this.play();
+        }
+    }
+
+    private addListener(): void {
+        this.slider.addEventListener("input", (e) => this.listener(e));
+        this.timeout = setInterval(() => this.updateSlider(), 1000);
+    }
+
+    private removeListener(): void {
+        this.slider.removeEventListener("input", (e) => this.listener(e));
+        clearInterval(this.timeout);
+    }
+
+    protected updateRange(): void {
+        const sound = this.getSound();
+        const duration = document.getElementById("duration-time")!;
+
+        const maximum = Math.ceil(sound.buffer!.duration);
+        this.slider.max = maximum.toString();
+        duration.textContent = this.timeFormat(maximum);
+    }
+
+    private updateSlider(): void {
         const sound = this.getSound();
         const current = document.getElementById("current-time")!;
 
         if (sound.isPlaying) {
             const value = Math.round(this.getPlaybackTime());
 
-            slider.value = value.toString();
+            this.slider.value = value.toString();
             current.textContent = this.timeFormat(value);
         }
     }
@@ -90,6 +115,6 @@ export abstract class Player extends Media {
 
     public destructor(): void {
         super.destructor();
-        clearInterval(this.timeout);
+        this.removeListener();
     }
 }
