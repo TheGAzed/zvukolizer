@@ -98,6 +98,8 @@ export abstract class State<M extends Media> implements StateEdges {
         const sound = systems_sound(this.context.getListener());
         navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
             sound.setMediaStreamSource(stream);
+            sound.name = "Microphone";
+
             this.context.setState(new MicrophoneState(this.context, sound));
             this.context.toggleLoading();
         }).catch(error => {

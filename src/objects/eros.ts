@@ -3,10 +3,10 @@ import * as THREE from "three";
 import { Visual } from "@/objects/visual";
 import { Context } from "@/utils/context";
 
-import vertexShader from "@/shaders/aether.vert?raw"
-import fragmentShader from "@/shaders/aether.frag?raw"
+import vertexShader from "@/shaders/eros.vert?raw"
+import fragmentShader from "@/shaders/eros.frag?raw"
 
-export class Aether extends Visual {
+export class Eros extends Visual {
     private readonly meshes: THREE.Group = new THREE.Group();
 
     constructor(context: Context) {
@@ -59,6 +59,6 @@ export class Aether extends Visual {
     }
 
     public toString(): string {
-        return "Aether";
+        return "Eros";
     }
 }

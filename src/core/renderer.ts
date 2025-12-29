@@ -11,7 +11,6 @@ export function core_renderer() {
 
     window.addEventListener("resize", () => {
         const container = document.getElementById("main")!;
-        console.log(container.clientWidth, container.clientHeight);
 
         renderer.setSize(container.clientWidth, container.clientHeight, true);
         renderer.setPixelRatio(window.devicePixelRatio);

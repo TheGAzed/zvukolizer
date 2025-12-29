@@ -53,7 +53,7 @@ export abstract class Player extends Media {
         this.addListener();
     }
 
-    private listener(event: Event): void {
+    private listener(): void {
         const sound = this.getSound();
         const wasPlaying = sound.isPlaying;
         this.stop();
@@ -73,12 +73,12 @@ export abstract class Player extends Media {
     }
 
     private addListener(): void {
-        this.slider.addEventListener("input", (e) => this.listener(e));
+        this.slider.addEventListener("input", () => this.listener());
         this.timeout = setInterval(() => this.updateSlider(), 1000);
     }
 
     private removeListener(): void {
-        this.slider.removeEventListener("input", (e) => this.listener(e));
+        this.slider.removeEventListener("input", () => this.listener());
         clearInterval(this.timeout);
     }
 

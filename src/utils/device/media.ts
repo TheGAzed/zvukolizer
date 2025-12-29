@@ -31,6 +31,8 @@ export abstract class Media {
     }
 
     public destructor(): void {
+        this.getSound().stop();
+        this.getSound().setVolume(0);
         this.getSound().disconnect();
     };
 

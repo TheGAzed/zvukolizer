@@ -6,7 +6,8 @@ import { core_renderer } from "@/core/renderer";
 import { Gaia } from "@/objects/gaia";
 import { InitialState, State } from "@/utils/state";
 import { Pontus } from "@/objects/pontus";
-import { Aether } from "@/objects/aether";
+import { Eros } from "@/objects/eros";
+import { Tartarus } from "@/objects/tartarus";
 
 export class Context {
     private readonly listener: THREE.AudioListener; // audio listener
@@ -26,9 +27,10 @@ export class Context {
 
         // add implemented visualisers
         this.visuals = [
-            new Aether(this),
+            new Tartarus(this),
             new Pontus(this),
             new Gaia(this),
+            new Eros(this),
         ];
 
         this.state = new InitialState(this);
