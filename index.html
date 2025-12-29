@@ -13,59 +13,48 @@
             <p class="text-2xl z-51 text-gray-100">Loading...</p>
         </div>
 
-        <header id="header" class="flex flex-col justify-center h-32 items-center">
-            <h1 id="title" class="text-white text-4xl font-bold">ZVUKOLIZER</h1>
-            <h2 id="subtitle" class="truncate w-100 text-white text-2xl text-center">[GAIA] Joy Division - Disorder</h2>
+        <header id="header" class="flex flex-col justify-center lg:h-32 items-center sm:h-64">
+            <h1 id="title" class="text-white lg:text-4xl sm:text-8xl font-bold">ZVUKOLIZER</h1>
+            <h2 id="subtitle" class="truncate lg:w-100 sm:w-200 text-white lg:text-2xl sm:text-4xl text-center">[GAIA] Joy Division - Disorder</h2>
+            <h2 id="fps"></h2>
         </header>
 
         <main id="main" class="flex-1 min-h-0"></main>
 
-        <footer id="footer" class="flex flex-col justify-between items-center h-54">
-            <div id="main-form" class="flex w-100 justify-between">
+        <footer id="footer" class="flex flex-col justify-between items-center lg:h-54 sm:h-108">
+            <div id="main-form" class="flex lg:w-100 justify-between sm:w-200">
                 <input title="Play Custom Song" id="song-button" name="song" type="file" class="hidden" accept="audio/*" onchange="context.getState().onFile(event)" />
-                <label for="song-button" class="flex justify-center items-center w-12 h-12 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <svg id="song" class="w-6 h-6">
-                        <use xlink:href="/icons/music.svg"></use>
-                    </svg>
+                <label for="song-button" class="flex justify-center items-center lg:w-12 lg:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
+                    <img id="song" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12" src="/icons/music.svg" alt="note">
                 </label>
 
-                <input title="Play Song Playlist" id="list-button" name="list" type="file" class="hidden" accept="audio/*" onchange="context.getState().onFolder(event)"  multiple webkitdirectory mozdirectory />
-                <label for="list-button" class="flex justify-center items-center w-12 h-12 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <svg id="list" class="w-6 h-6">
-                        <use xlink:href="/icons/list-music.svg"></use>
-                    </svg>
+                <input title="Play Song Playlist" id="list-button" name="list" type="file" class="hidden" accept="audio/*" onchange="context.getState().onFolder(event)"  multiple />
+                <label for="list-button" class="flex justify-center items-center lg:w-12 lg:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
+                    <img id="list" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12" src="/icons/list-music.svg" alt="list">
                 </label>
 
                 <input title="Record Microphone" id="mic-button" name="mic" type="button" class="hidden" onclick="context.getState().onMic()" />
-                <label for="mic-button" class="flex justify-center items-center w-12 h-12 border-2  border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <svg id="mic" class="w-6 h-6">
-                        <use xlink:href="/icons/mic-vocal.svg"></use>
-                    </svg>
+                <label for="mic-button" class="flex justify-center items-center lg:w-12 lg:h-12 sm:w-24 sm:h-24 border-2  border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
+                    <img id="mic" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12" src="/icons/mic-vocal.svg" alt="mic">
                 </label>
 
                 <input title="Record MIDI Device" id="midi-button" name="midi" type="button" class="hidden" />
-                <label for="midi-button" class="flex justify-center items-center w-12 h-12 border-2 border-gray-100 bg-gray-100 rounded opacity-50">
-                    <svg id="midi" class="w-6 h-6">
-                        <use xlink:href="/icons/keyboard-music.svg"></use>
-                    </svg>
+                <label for="midi-button" class="flex justify-center items-center lg:w-12 lg:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 bg-gray-100 rounded opacity-50">
+                    <img id="midi" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12" src="/icons/keyboard-music.svg" alt="midi">
                 </label>
 
                 <input title="Next Visualizer" id="left-button" name="left" type="button" class="hidden" onclick="context.prevVisual()" />
-                <label for="left-button"  class="flex justify-center items-center w-12 h-12 border-2 border-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <svg id="left" class="w-6 h-6 text-gray-100">
-                        <use xlink:href="/icons/chevron-left.svg"></use>
-                    </svg>
+                <label for="left-button"  class="flex justify-center items-center lg:w-12 lg:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 rounded cursor-pointer hover:opacity-75">
+                    <img id="left" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12" src="/icons/chevron-left.svg" alt="left">
                 </label>
 
                 <input title="Next Visualizer" id="right-button" name="right" type="button" class="hidden" onclick="context.nextVisual()" />
-                <label for="right-button"  class="flex justify-center items-center w-12 h-12 border-2 border-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <svg id="right" class="w-6 h-6 text-gray-100">
-                        <use xlink:href="/icons/chevron-right.svg"></use>
-                    </svg>
+                <label for="right-button"  class="flex justify-center items-center lg:w-12 lg:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 rounded cursor-pointer hover:opacity-75">
+                    <img id="right" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12 text-gray-100" src="/icons/chevron-right.svg" alt="right">
                 </label>
             </div>
 
-            <form id="side-form" class="flex flex-col w-100 h-30 mb-8 gap-4" onsubmit="context.getState().handleForm(event)">
+            <form id="side-form" class="flex flex-col lg:w-100 lg:h-30 mb-8 gap-4 sm:w-200 sm:h-60" onsubmit="context.getState().handleForm(event)">
                 <!-- Children Go Here -->
             </form>
         </footer>

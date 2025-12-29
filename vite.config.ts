@@ -11,4 +11,8 @@ export default defineConfig({
     plugins: [
         tailwindcss(),
     ],
+    server: {
+        host: true, // expose to network
+        port: 5173,
+    },
 });

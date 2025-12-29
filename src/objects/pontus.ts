@@ -9,8 +9,8 @@ import { Context } from "@/utils/context";
 export class Pontus extends Visual {
     private readonly lineMeshes: THREE.Group = new THREE.Group();
     private readonly planeMeshes: THREE.Group = new THREE.Group();
-    private readonly lineCount: number = 64;
-    private readonly planeHeight: number = 3;
+    private readonly lineCount: number = 32;
+    private readonly planeHeight: number = 1;
 
     private readonly lineGeometry: THREE.BoxGeometry;
     private readonly planeGeometry: THREE.PlaneGeometry;
@@ -18,11 +18,11 @@ export class Pontus extends Visual {
     constructor(context: Context) {
         super(context);
 
-        this.lineGeometry = new THREE.BoxGeometry(5, 0.001, 0.001, 64);
-        this.planeGeometry = new THREE.PlaneGeometry(5, this.planeHeight, 64, 1);
+        this.lineGeometry = new THREE.BoxGeometry(5, 0.015, 0.015, 32);
+        this.planeGeometry = new THREE.PlaneGeometry(5, this.planeHeight, 32);
 
         const height = 6;
-        const posZ = 0.001;
+        const posZ = 0.015;
         for (let i = 0; i < this.lineCount; i++) {
             const offset = i * (Math.random() * this.lineCount);
 
@@ -43,14 +43,15 @@ export class Pontus extends Visual {
     }
 
     public animate(): void {
+        const data = this.getAnalyser().getFrequencyData();
+        const time = this.clock.getElapsedTime();
+
         for (let i = 0; i < this.lineCount; i++) {
             const reverse = (this.lineCount - 1) - i;
             const line = this.lineMeshes.children[reverse] as THREE.Mesh;
             const plane = this.planeMeshes.children[reverse] as THREE.Mesh;
 
-            const data = this.getAnalyser().getFrequencyData();
             const frequency = data[i % data.length] / 256;
-            const time = this.clock.getElapsedTime();
 
             const lineMaterial = line.material as THREE.ShaderMaterial;
             lineMaterial.uniforms.u_frequency.value = frequency;
@@ -64,7 +65,6 @@ export class Pontus extends Visual {
 
     private line(offset: number): THREE.Mesh {
         const material = new THREE.ShaderMaterial({
-            wireframe: true,
             uniforms: {
                 u_time: { value: 0.0 },
                 u_frequency: { value: 0.0 },
@@ -80,7 +80,6 @@ export class Pontus extends Visual {
 
     private plane(offset: number): THREE.Mesh {
         const material = new THREE.ShaderMaterial({
-            side: THREE.DoubleSide,
             uniforms: {
                 u_time: { value: 0.0 },
                 u_frequency: { value: 0.0 },
@@ -99,3 +98,4 @@ export class Pontus extends Visual {
         return "Pontus";
     }
 }
+

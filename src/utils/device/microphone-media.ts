@@ -49,6 +49,11 @@ export class Microphone extends Media {
     }
 
     updateHeading(): void {
+        document.getElementById("subtitle")!.textContent =
+            "[" +
+            this.getContext().getVisual().toString().toUpperCase() +
+            "] " +
+            "MICROPHONE"
     }
 
     getSound(): Audio {

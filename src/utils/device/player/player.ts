@@ -27,8 +27,8 @@ export abstract class Player extends Media {
         this.startTime = sound.context.currentTime - this.pauseTime;
         sound.play(delay);
 
-        const use = document.querySelector(`label[for="play-button"]`)!.querySelector("use")!;
-        use.setAttribute("xlink:href", "/icons/pause.svg");
+        const img = document.getElementById("play")!;
+        img.setAttribute("src", "/icons/pause.svg");
     }
 
     protected stop(): void {
@@ -37,8 +37,8 @@ export abstract class Player extends Media {
         this.pauseTime = sound.context.currentTime - this.startTime;
         sound.stop();
 
-        const use = document.querySelector(`label[for="play-button"]`)!.querySelector("use")!;
-        use.setAttribute("xlink:href", "/icons/play.svg");
+        const img = document.getElementById("play")!;
+        img.setAttribute("src", "/icons/play.svg");
     }
 
     protected getPlaybackTime(): number {

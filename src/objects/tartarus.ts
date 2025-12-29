@@ -47,21 +47,20 @@ export class Tartarus extends Visual {
         for (let i = 0; i < children.length; i++) {
             const child = children[i];
 
-            const freqX = 1 + (frequencies[(3 * i)    ] / 255.0) * 0.5 * (Math.random() * 1.5);
-            const freqY = 1 + (frequencies[(3 * i) + 1] / 255.0) * 0.5 * (Math.random() * 1.5);
-            const freqZ = 1 + (frequencies[(3 * i) + 2] / 255.0) * 0.5 * (Math.random() * 1.5);
+            const freqX = 1 + ((frequencies[(3 * i)    ] / 255.0) * 1.5) * (Math.random() * 0.5);
+            const freqY = 1 + ((frequencies[(3 * i) + 1] / 255.0) * 1.5) * (Math.random() * 0.5);
+            const freqZ = 1 + ((frequencies[(3 * i) + 2] / 255.0) * 1.5) * (Math.random() * 0.5);
 
             const speed = 0.1;
             child.scale.lerp(child.userData.targetScale, speed);
 
-            // If close enough to the target, pick a new one
             if (child.scale.distanceTo(child.userData.targetScale) < 0.01) {
                 child.userData.targetScale.set(freqX, freqY, freqZ);
             }
         }
 
-        this.getScene().rotation.x += delta * 0.1;
-        this.getScene().rotation.y += delta * 0.1;
+        this.getScene().rotation.x += delta * (0.1 + (frequencies[0] / 1023.0));
+        this.getScene().rotation.y += delta * (0.1 + (frequencies[1] / 1023.0));
     }
 
     public toString(): string {

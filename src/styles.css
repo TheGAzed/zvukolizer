@@ -14,22 +14,52 @@ input[type=range] {
     outline: none;
     background-color: white;
     border-radius: 0;
+    border: none;
 }
 
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    max-width: 0.75rem;
-    min-width: 0.75rem;
-    height: 0.75rem;
     background: #030712;
     cursor: pointer;
+    border-radius: 0;
+    border: none;
+    outline: none;
 }
 
 input[type=range]::-moz-range-thumb {
-    max-width: 0.75rem;
-    min-width: 0.75rem;
-    height: 0.75rem;
     background: #030712;
     cursor: pointer;
+    border-radius: 0;
+    border: none;
+    outline: none;
 }
+
+@media (width >= 40rem /* 640px */) {
+    input[type=range]::-webkit-slider-thumb {
+        max-width: 1.5rem;
+        min-width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    input[type=range]::-moz-range-thumb {
+        max-width: 1.5rem;
+        min-width: 1.5rem;
+        height: 1.5rem;
+    }
+}
+
+@media (width >= 64rem /* 1024px */) {
+    input[type=range]::-webkit-slider-thumb {
+        max-width: 0.9rem;
+        min-width: 0.9rem;
+        height: 0.75rem;
+    }
+
+    input[type=range]::-moz-range-thumb {
+        max-width: 0.9rem;
+        min-width: 0.9rem;
+        height: 0.75rem;
+    }
+}
+

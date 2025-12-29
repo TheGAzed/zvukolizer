@@ -8,6 +8,7 @@ import { InitialState, State } from "@/utils/state";
 import { Pontus } from "@/objects/pontus";
 import { Eros } from "@/objects/eros";
 import { Tartarus } from "@/objects/tartarus";
+import Stats from 'stats.js'
 
 export class Context {
     private readonly listener: THREE.AudioListener; // audio listener
@@ -17,8 +18,12 @@ export class Context {
 
     private state: State<Media>; // current state
     private index: number = 0; // index fo currently active visualiser
+    private stats = new Stats();
 
     constructor() {
+        this.stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
+        document.body.appendChild(this.stats.dom)
+
         // get form of audio controls
         this.form = document.getElementsByTagName("form").item(0)!;
 
@@ -27,8 +32,8 @@ export class Context {
 
         // add implemented visualisers
         this.visuals = [
-            new Tartarus(this),
             new Pontus(this),
+            new Tartarus(this),
             new Gaia(this),
             new Eros(this),
         ];
@@ -45,10 +50,14 @@ export class Context {
     }
 
     public animate(): void {
+        this.stats.begin();
+
         const object = this.getVisual();
         object.animate();
 
         this.renderer.render(object.getScene(), object.getCamera());
+
+        this.stats.end();
 
         requestAnimationFrame(() => this.animate());
     }
