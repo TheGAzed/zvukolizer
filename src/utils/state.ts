@@ -33,7 +33,7 @@ export abstract class State<M extends Media> implements StateEdges {
         const sound = systems_sound(this.context.getListener());
         sound.name = "Joy Division - Disorder";
 
-        loader.load("sound/disorder.mp3", (buffer) => {
+        loader.load("./sound/disorder.mp3", (buffer) => {
             sound.setBuffer(buffer).setLoop(true);
 
             this.context.setState(new DemoState(this.context, sound));
