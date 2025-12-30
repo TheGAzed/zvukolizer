@@ -8,14 +8,14 @@ export class Tartarus extends Visual {
         super(context);
 
         const translate = [
-            [-0.51, -0.51, -0.51],
-            [-0.51, -0.51,  0.51],
-            [-0.51,  0.51, -0.51],
-            [-0.51,  0.51,  0.51],
-            [ 0.51, -0.51, -0.51],
-            [ 0.51, -0.51,  0.51],
-            [ 0.51,  0.51, -0.51],
-            [ 0.51,  0.51,  0.51],
+            [-0.505, -0.505, -0.505],
+            [-0.505, -0.505,  0.505],
+            [-0.505,  0.505, -0.505],
+            [-0.505,  0.505,  0.505],
+            [ 0.505, -0.505, -0.505],
+            [ 0.505, -0.505,  0.505],
+            [ 0.505,  0.505, -0.505],
+            [ 0.505,  0.505,  0.505],
         ];
 
         for (const t of translate) {
@@ -32,10 +32,8 @@ export class Tartarus extends Visual {
             this.getScene().add(object);
         }
 
-        // Initialize somewhere (once), e.g., after creating the scene:
         this.getScene().children.forEach((child: any) => {
-
-            child.userData.targetScale = new THREE.Vector3(2, 2, 2);
+            child.userData.targetScale = new THREE.Vector3(1, 1, 1);
         });
     }
 
