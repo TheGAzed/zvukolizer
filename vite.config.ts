@@ -3,6 +3,7 @@ import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
+    base: process.env.NODE_ENV === 'production' ? '/zvukolizer/' : '',
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "src"),
@@ -11,8 +12,4 @@ export default defineConfig({
     plugins: [
         tailwindcss(),
     ],
-    server: {
-        host: true, // expose to network
-        port: 5173,
-    },
 });
