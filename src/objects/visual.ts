@@ -6,7 +6,7 @@ import { Context } from "@/utils/context";
 
 export abstract class Visual {
     private readonly context: Context;
-    protected clock: THREE.Clock;
+    private clock: THREE.Clock;
 
     private readonly scene: THREE.Scene;
     private readonly camera: THREE.PerspectiveCamera;
@@ -32,6 +32,14 @@ export abstract class Visual {
 
     public getCamera() {
         return this.camera;
+    }
+
+    protected getDelta(): number {
+        return this.clock.getDelta();
+    }
+
+    protected getElapsedTime(): number {
+        return this.clock.getElapsedTime();
     }
 
     public abstract animate(): void;

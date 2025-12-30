@@ -16,7 +16,7 @@ export abstract class Player extends Media {
 
         this.removeListener();
         this.updateRange();
-        this.updateHeading();
+        this.updateSubtitle();
         this.addListener();
     }
 

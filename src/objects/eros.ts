@@ -32,7 +32,7 @@ export class Eros extends Visual {
 
     public animate(): void {
         const data = this.getAnalyser().getFrequencyData();
-        const time = this.clock.getElapsedTime();
+        const time = this.getElapsedTime();
         const frequency = data.reduce((total, x) => total + x, 0) / data.length;
 
         this.meshes.children.forEach((child) => {

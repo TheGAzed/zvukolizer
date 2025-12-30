@@ -20,6 +20,6 @@ export class EmptyMedia extends Media {
     protected toggle(): void {
     }
 
-    updateHeading(): void {
+    updateSubtitle(): void {
     }
 }

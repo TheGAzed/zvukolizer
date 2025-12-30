@@ -41,7 +41,7 @@ export class Gaia extends Visual {
             const material = this.icosahedronMeshes[i].material as THREE.ShaderMaterial;
 
             material.uniforms.u_frequency.value = ranges[i % ranges.length];
-            material.uniforms.u_time.value = this.clock.getElapsedTime();
+            material.uniforms.u_time.value = this.getElapsedTime();
         }
 
         this.getScene().rotation.y += (Math.PI * (0.0002));

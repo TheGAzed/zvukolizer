@@ -18,7 +18,7 @@ export abstract class Media {
 
         this.subtitle = document.getElementById("subtitle")!;
 
-        this.updateHeading();
+        this.updateSubtitle();
     }
 
     public getContext(): Context {
@@ -39,7 +39,7 @@ export abstract class Media {
         this.getSound().disconnect();
     };
 
-    public updateHeading(): void {
+    public updateSubtitle(): void {
         const name = this.getName();
         const visual = this.getContext().getVisual().toString().toUpperCase();
 

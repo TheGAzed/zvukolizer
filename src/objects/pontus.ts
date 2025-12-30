@@ -44,7 +44,7 @@ export class Pontus extends Visual {
 
     public animate(): void {
         const data = this.getAnalyser().getFrequencyData();
-        const time = this.clock.getElapsedTime();
+        const time = this.getElapsedTime();
 
         for (let i = 0; i < this.lineCount; i++) {
             const reverse = (this.lineCount - 1) - i;

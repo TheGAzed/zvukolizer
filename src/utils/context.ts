@@ -83,12 +83,12 @@ export class Context {
 
     public nextVisual(): void {
         this.index = (this.index + 1) % this.visuals.length;
-        this.state.getMedia().updateHeading();
+        this.state.getMedia().updateSubtitle();
     }
 
     public prevVisual(): void {
         this.index = this.index == 0 ? this.visuals.length - 1 : this.index - 1;
-        this.state.getMedia().updateHeading();
+        this.state.getMedia().updateSubtitle();
     }
 
     public getRenderer(): THREE.WebGLRenderer {
