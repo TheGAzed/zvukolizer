@@ -40,6 +40,7 @@ export class Tartarus extends Visual {
     public animate(): void {
         const delta = this.getDelta();
         const frequencies = this.getAnalyser().getFrequencyData();
+        const targetScale = [];
 
         const children = this.getScene().children;
         for (let i = 0; i < children.length; i++) {
