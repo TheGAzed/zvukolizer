@@ -28,7 +28,7 @@ export abstract class Player extends Media {
         sound.play(delay);
 
         const img = document.getElementById("play")!;
-        img.setAttribute("src", "/icons/pause.svg");
+        img.setAttribute("src", "icons/pause.svg");
     }
 
     protected stop(): void {
@@ -38,7 +38,7 @@ export abstract class Player extends Media {
         sound.stop();
 
         const img = document.getElementById("play")!;
-        img.setAttribute("src", "/icons/play.svg");
+        img.setAttribute("src", "icons/play.svg");
     }
 
     protected getPlaybackTime(): number {
