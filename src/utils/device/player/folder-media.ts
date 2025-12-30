@@ -32,12 +32,16 @@ export class FolderMedia extends Player {
         for (const file of files) {
             await new Promise(requestAnimationFrame);
 
-            const buffer = await loader.loadAsync(URL.createObjectURL(file));
-            const audio = systems_sound(listener);
-            audio.name = file.name;
-            audio.setBuffer(buffer);
+            try {
+                const buffer = await loader.loadAsync(URL.createObjectURL(file));
+                const audio = systems_sound(listener);
+                audio.name = file.name;
+                audio.setBuffer(buffer);
 
-            this.songs.push({ sound: audio, analyser: systems_analyzer(audio) });
+                this.songs.push({ sound: audio, analyser: systems_analyzer(audio) });
+            } catch (e) {
+                this.getContext().handleError(e);
+            }
         }
     }
 

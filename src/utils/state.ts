@@ -22,12 +22,10 @@ interface StateEdges {
 export abstract class State<M extends Media> implements StateEdges {
     private readonly context: Context;
     private readonly media: M;
-    private readonly error: HTMLElement;
 
     protected constructor(context: Context, media: M) {
         this.context = context;
         this.media = media;
-        this.error = document.getElementById("error")!;
     }
 
     onDemo() {
@@ -41,7 +39,7 @@ export abstract class State<M extends Media> implements StateEdges {
             this.context.setState(new DemoState(this.context, sound));
             this.context.toggleLoading();
         }, undefined, (error) => {
-            this.handleError(error);
+            this.context.handleError(error);
         });
     }
 
@@ -64,7 +62,7 @@ export abstract class State<M extends Media> implements StateEdges {
             this.context.setState(new FileState(this.context, sound));
             this.context.toggleLoading();
         }, undefined, (error) => {
-            this.handleError(error);
+            this.context.handleError(error);
             this.context.toggleLoading();
         });
     }
@@ -89,7 +87,7 @@ export abstract class State<M extends Media> implements StateEdges {
             this.context.setState(new FolderState(this.context, sound, list));
             this.context.toggleLoading();
         }, undefined, (error) => {
-            this.handleError(error);
+            this.context.handleError(error);
             this.context.toggleLoading();
         });
     }
@@ -105,24 +103,13 @@ export abstract class State<M extends Media> implements StateEdges {
             this.context.setState(new MicrophoneState(this.context, sound));
             this.context.toggleLoading();
         }).catch(error => {
-            this.handleError(error);
+            this.context.handleError(error);
             this.context.toggleLoading();
         });
     }
 
     onMIDI(): void {
         this.context.setState(new MIDIState(this.context, systems_sound(this.context.getListener())));
-    }
-
-    private handleError(error: unknown | any) {
-        if (error instanceof Error) {
-            this.error.classList.toggle("hidden");
-            this.error.classList.toggle("flex");
-            this.error.title = error.message;
-
-            this.error.children[1].innerHTML = error.message;
-        }
-        console.log(error);
     }
 
     public getMedia(): M {

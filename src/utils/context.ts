@@ -20,12 +20,15 @@ export class Context {
     private index: number = 0; // index fo currently active visualiser
     private stats = new Stats();
 
+    private readonly error: HTMLElement;
+
     constructor() {
         this.stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
         //document.body.appendChild(this.stats.dom)
 
         // get form of audio controls
         this.form = document.getElementsByTagName("form").item(0)!;
+        this.error = document.getElementById("error")!;
 
         this.listener = systems_listener(); // generate single systems audio listener
         this.renderer = core_renderer(); // create core renderer
@@ -99,5 +102,21 @@ export class Context {
         const load = document.getElementById("loading-screen")!;
         load.classList.toggle("hidden");
         load.classList.toggle("fixed");
+    }
+
+    public handleError(error: unknown | any) {
+        if (error instanceof Error) {
+            this.error.classList.toggle("hidden");
+            this.error.classList.toggle("flex");
+            this.error.title = error.message;
+
+            this.error.children[1].innerHTML = error.message;
+        }
+        console.log(error);
+
+        setTimeout(() => {
+            this.error.classList.toggle("hidden");
+            this.error.classList.toggle("flex");
+        }, 4000);
     }
 }
