@@ -29,6 +29,9 @@ export class Pontus extends Visual {
             const line = this.line(offset);
             const plane = this.plane(offset);
 
+            line.scale.setX(1 + (i * 0.003));
+            plane.scale.setX(1 + (i * 0.003));
+
             line.position.y = (i * (height / this.lineCount)) - (height / 2);
             plane.position.y = (i * (height / this.lineCount)) - ((height / 2) + (this.planeHeight / 2));
 
