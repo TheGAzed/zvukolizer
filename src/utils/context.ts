@@ -106,17 +106,16 @@ export class Context {
 
     public handleError(error: unknown | any) {
         if (error instanceof Error) {
-            this.error.classList.toggle("hidden");
-            this.error.classList.toggle("flex");
-            this.error.title = error.message;
-
-            this.error.children[1].innerHTML = error.message;
+            this.error.classList.remove("hidden");
+            this.error.classList.add("flex");
+            this.error.title = this.error.children[1].innerHTML = error.message;
         }
         console.log(error);
 
         setTimeout(() => {
-            this.error.classList.toggle("hidden");
-            this.error.classList.toggle("flex");
+            this.error.classList.remove("flex");
+            this.error.classList.add("hidden");
+            this.error.title = this.error.children[1].innerHTML = "";
         }, 4000);
     }
 }
