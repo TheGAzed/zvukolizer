@@ -18,8 +18,8 @@ export class Pontus extends Visual {
     constructor(context: Context) {
         super(context);
 
-        this.lineGeometry = new THREE.BoxGeometry(5, 0.015, 0.015, 32);
-        this.planeGeometry = new THREE.PlaneGeometry(5, this.planeHeight, 32);
+        this.lineGeometry = new THREE.BoxGeometry(5, 0.015, 0.015, 64);
+        this.planeGeometry = new THREE.PlaneGeometry(5, this.planeHeight, 64);
 
         const height = 6;
         const posZ = 0.015;
