@@ -117,4 +117,8 @@ export abstract class Player extends Media {
         super.destructor();
         this.removeListener();
     }
+
+    protected getName(): string {
+        return this.getSound().name;
+    }
 }

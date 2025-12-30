@@ -29,7 +29,7 @@
                     <img id="song" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12" src="icons/music.svg" alt="note">
                 </label>
 
-                <input title="Play Song Playlist" id="list-button" name="list" type="file" class="hidden" accept="audio/*" onchange="context.getState().onFolder(event)"  multiple />
+                <input title="Play Song Playlist" id="list-button" name="list" type="file" class="hidden" accept="audio/*" onchange="context.getState().onFolder(event)"  multiple webkitdirectory mozdirectory />
                 <label for="list-button" class="flex justify-center items-center lg:w-12 lg:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
                     <img id="list" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12" src="icons/list-music.svg" alt="list">
                 </label>

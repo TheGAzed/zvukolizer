@@ -32,10 +32,10 @@ export class Context {
 
         // add implemented visualisers
         this.visuals = [
-            new Pontus(this),
-            new Tartarus(this),
             new Gaia(this),
+            new Pontus(this),
             new Eros(this),
+            new Tartarus(this),
         ];
 
         this.state = new InitialState(this);
