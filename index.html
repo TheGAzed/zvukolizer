@@ -9,55 +9,60 @@
         <base href="%BASE_URL%">
     </head>
 
-    <body id="body" class="flex flex-col bg-gray-950">
+    <body id="body" class="relative flex flex-col bg-gray-950">
         <div id="loading-screen" class="fixed bg-gray-950 inset-0 flex items-center justify-center bg-zl-black text-zl-white z-50">
             <p class="text-2xl z-51 text-gray-100">Loading...</p>
         </div>
 
-        <header id="header" class="flex flex-col justify-center lg:h-32 items-center sm:h-64">
-            <h1 id="title" class="text-white lg:text-4xl sm:text-8xl font-bold">ZVUKOLIZER</h1>
-            <h2 id="subtitle" class="truncate lg:w-100 sm:w-200 text-white lg:text-2xl sm:text-4xl text-center">[GAIA] Joy Division - Disorder</h2>
-            <h2 id="fps"></h2>
+        <header id="header" class="flex flex-col justify-center md:h-32 items-center sm:h-64">
+            <h1 id="title" class="text-white md:text-4xl sm:text-8xl font-bold">ZVUKOLIZER</h1>
+            <h2 id="subtitle" class="truncate md:w-100 sm:w-200 text-white md:text-2xl sm:text-4xl text-center">[GAIA] Joy Division - Disorder</h2>
+            <div id="fps"></div>
         </header>
 
         <main id="main" class="flex-1 min-h-0"></main>
 
-        <footer id="footer" class="flex flex-col justify-between items-center lg:h-54 sm:h-108">
-            <div id="main-form" class="flex lg:w-100 justify-between sm:w-200">
+        <footer id="footer" class="flex flex-col justify-between items-center md:h-54 sm:h-108">
+            <div id="main-form" class="flex md:w-100 justify-between sm:w-200">
                 <input title="Play Custom Song" id="song-button" name="song" type="file" class="hidden" accept="audio/*" onchange="context.getState().onFile(event)" />
-                <label for="song-button" class="flex justify-center items-center lg:w-12 lg:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <img id="song" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12" src="icons/music.svg" alt="note">
+                <label for="song-button" class="flex justify-center items-center md:w-12 md:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
+                    <img id="song" class="md:w-6 md:h-6 sm:w-12 sm:h-12" src="icons/music.svg" alt="note">
                 </label>
 
                 <input title="Play Song Playlist" id="list-button" name="list" type="file" class="hidden" accept="audio/*" onchange="context.getState().onFolder(event)"  multiple webkitdirectory mozdirectory />
-                <label for="list-button" class="flex justify-center items-center lg:w-12 lg:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <img id="list" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12" src="icons/list-music.svg" alt="list">
+                <label for="list-button" class="flex justify-center items-center md:w-12 md:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
+                    <img id="list" class="md:w-6 md:h-6 sm:w-12 sm:h-12" src="icons/list-music.svg" alt="list">
                 </label>
 
                 <input title="Record Microphone" id="mic-button" name="mic" type="button" class="hidden" onclick="context.getState().onMic()" />
-                <label for="mic-button" class="flex justify-center items-center lg:w-12 lg:h-12 sm:w-24 sm:h-24 border-2  border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <img id="mic" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12" src="icons/mic-vocal.svg" alt="mic">
+                <label for="mic-button" class="flex justify-center items-center md:w-12 md:h-12 sm:w-24 sm:h-24 border-2  border-gray-100 bg-gray-100 rounded cursor-pointer hover:opacity-75">
+                    <img id="mic" class="md:w-6 md:h-6 sm:w-12 sm:h-12" src="icons/mic-vocal.svg" alt="mic">
                 </label>
 
                 <input title="Record MIDI Device" id="midi-button" name="midi" type="button" class="hidden" />
-                <label for="midi-button" class="flex justify-center items-center lg:w-12 lg:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 bg-gray-100 rounded opacity-50">
-                    <img id="midi" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12" src="icons/keyboard-music.svg" alt="midi">
+                <label for="midi-button" class="flex justify-center items-center md:w-12 md:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 bg-gray-100 rounded opacity-50">
+                    <img id="midi" class="md:w-6 md:h-6 sm:w-12 sm:h-12" src="icons/keyboard-music.svg" alt="midi">
                 </label>
 
                 <input title="Next Visualizer" id="left-button" name="left" type="button" class="hidden" onclick="context.prevVisual()" />
-                <label for="left-button"  class="flex justify-center items-center lg:w-12 lg:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <img id="left" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12" src="icons/chevron-left.svg" alt="left">
+                <label for="left-button"  class="flex justify-center items-center md:w-12 md:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 rounded cursor-pointer hover:opacity-75">
+                    <img id="left" class="md:w-6 md:h-6 sm:w-12 sm:h-12" src="icons/chevron-left.svg" alt="left">
                 </label>
 
                 <input title="Next Visualizer" id="right-button" name="right" type="button" class="hidden" onclick="context.nextVisual()" />
-                <label for="right-button"  class="flex justify-center items-center lg:w-12 lg:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 rounded cursor-pointer hover:opacity-75">
-                    <img id="right" class="lg:w-6 lg:h-6 sm:w-12 sm:h-12 text-gray-100" src="icons/chevron-right.svg" alt="right">
+                <label for="right-button"  class="flex justify-center items-center md:w-12 md:h-12 sm:w-24 sm:h-24 border-2 border-gray-100 rounded cursor-pointer hover:opacity-75">
+                    <img id="right" class="md:w-6 md:h-6 sm:w-12 sm:h-12 text-gray-100" src="icons/chevron-right.svg" alt="right">
                 </label>
             </div>
 
-            <form id="side-form" class="flex flex-col lg:w-100 lg:h-30 mb-8 gap-4 sm:w-200 sm:h-60" onsubmit="context.getState().handleForm(event)">
+            <form id="side-form" class="flex flex-col md:w-100 md:h-30 mb-8 gap-4 sm:w-200 sm:h-60" onsubmit="context.getState().handleForm(event)">
                 <!-- Children Go Here -->
             </form>
         </footer>
+
+        <aside id="error" class="absolute w-100 h-12 hidden bg-gray-100 top-8 gap-4 items-center px-2 rounded left-1/2 -translate-x-1/2">
+            <img src="icons/circle-x.svg" alt="error" class=":w-8 h-8">
+            <h4 class="text-xl w-60 truncate" id="error-message">ERROR</h4>
+        </aside>
     </body>
 </html>
