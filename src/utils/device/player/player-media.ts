@@ -1,10 +1,20 @@
 import { Media } from "@/utils/device/media";
 
-export abstract class Player extends Media {
-    private startTime = 0;
-    private pauseTime = 0;
+export abstract class PlayerMedia extends Media {
+    private startTime: number = 0;
+    private pauseTime: number = 0;
     private timeout?: NodeJS.Timeout = undefined;
     private slider: HTMLInputElement = document.getElementById("playback")! as HTMLInputElement;
+
+    public destructor(): void {
+        super.destructor();
+        this.removeListener();
+    }
+
+    public initializer(): void {
+        this.updateRange();
+        this.addListener();
+    }
 
     protected toggle(): void {
         this.getSound().isPlaying ? this.stop() : this.play();
@@ -48,9 +58,17 @@ export abstract class Player extends Media {
         return playbackTime % sound.buffer!.duration;
     }
 
-    public initializer(): void {
-        this.updateRange();
-        this.addListener();
+    protected updateRange(): void {
+        const sound = this.getSound();
+        const duration = document.getElementById("duration-time")!;
+
+        const maximum = Math.ceil(sound.buffer!.duration);
+        this.slider.max = maximum.toString();
+        duration.textContent = this.timeFormat(maximum);
+    }
+
+    protected getName(): string {
+        return this.getSound().name;
     }
 
     private listener(): void {
@@ -82,15 +100,6 @@ export abstract class Player extends Media {
         clearInterval(this.timeout);
     }
 
-    protected updateRange(): void {
-        const sound = this.getSound();
-        const duration = document.getElementById("duration-time")!;
-
-        const maximum = Math.ceil(sound.buffer!.duration);
-        this.slider.max = maximum.toString();
-        duration.textContent = this.timeFormat(maximum);
-    }
-
     private updateSlider(): void {
         const sound = this.getSound();
         const current = document.getElementById("current-time")!;
@@ -111,14 +120,5 @@ export abstract class Player extends Media {
         }).format(new Date(seconds * 1000));
 
         return formatted.toString();
-    }
-
-    public destructor(): void {
-        super.destructor();
-        this.removeListener();
-    }
-
-    protected getName(): string {
-        return this.getSound().name;
     }
 }

@@ -15,11 +15,8 @@ export class Context {
     private readonly visuals: Visual[]; // array of implemented visualisers
     private readonly renderer: THREE.WebGLRenderer; // main and only renderer
     private readonly form: HTMLFormElement; // controls form
-
     private state: State<Media>; // current state
-    private index: number = 0; // index fo currently active visualiser
     private stats = new Stats();
-
     private readonly error: HTMLElement;
 
     constructor() {
@@ -66,7 +63,7 @@ export class Context {
     }
 
     public getVisual(): Visual {
-        return this.visuals[this.index];
+        return this.visuals[0];
     }
 
     public setState(state: State<Media>) {
@@ -85,17 +82,11 @@ export class Context {
     }
 
     public nextVisual(): void {
-        this.index = (this.index + 1) % this.visuals.length;
-        this.state.getMedia().updateSubtitle();
+        this.visuals.push(<Visual>this.visuals.shift());
     }
 
     public prevVisual(): void {
-        this.index = this.index == 0 ? this.visuals.length - 1 : this.index - 1;
-        this.state.getMedia().updateSubtitle();
-    }
-
-    public getRenderer(): THREE.WebGLRenderer {
-        return this.renderer;
+        this.visuals.unshift(<Visual>this.visuals.pop());
     }
 
     public toggleLoading(): void {
@@ -104,7 +95,7 @@ export class Context {
         load.classList.toggle("fixed");
     }
 
-    public handleError(error: unknown | any) {
+    public showError(error: unknown | any) {
         if (error instanceof Error) {
             this.error.classList.remove("hidden");
             this.error.classList.add("flex");

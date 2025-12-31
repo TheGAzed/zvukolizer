@@ -1,4 +1,4 @@
-import { Player } from "@/utils/device/player/player";
+import { PlayerMedia } from "@/utils/device/player/player-media";
 import * as THREE from "three";
 
 import multiPlayer from "@/components/pages/multi.html?raw"
@@ -12,7 +12,7 @@ type Song = {
     analyser: THREE.AudioAnalyser;
 }
 
-export class FolderMedia extends Player {
+export class FolderMedia extends PlayerMedia {
     private readonly songs: Song[];
     private index = 0;
 
@@ -22,11 +22,11 @@ export class FolderMedia extends Player {
         this.songs = [{ sound, analyser: systems_analyzer(sound) }];
         this.play();
 
-        const listener = this.getContext().getListener();
-        this.loadFiles(listener, others).then(undefined);
+        const listener = context.getListener();
+        this.loadFiles(context, listener, others).then(undefined);
     }
 
-    private async loadFiles(listener: THREE.AudioListener, files: File[]) {
+    private async loadFiles(context: Context, listener: THREE.AudioListener, files: File[]): Promise<void> {
         const loader = systems_loader();
 
         for (const file of files) {
@@ -40,7 +40,7 @@ export class FolderMedia extends Player {
 
                 this.songs.push({ sound: audio, analyser: systems_analyzer(audio) });
             } catch (e) {
-                this.getContext().handleError(e);
+                context.showError(e);
             }
         }
     }

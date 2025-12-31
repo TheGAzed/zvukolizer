@@ -17,9 +17,13 @@ export class EmptyMedia extends Media {
     initializer(): void {
     }
 
+    updateSubtitle(): void {
+    }
+
     protected toggle(): void {
     }
 
-    updateSubtitle(): void {
+    protected getName(): string {
+        return "";
     }
 }

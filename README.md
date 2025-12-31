@@ -1,4 +1,10 @@
-# Visualiser
+# Zvukolizer
+
+## Use Case Diagram:
+![Use Case Diagram](assets/use-case-diagram.png)
+
+## Class Diagram
+![Class Diagram](assets/class-diagram.png)
 
 ## Sources
 - [Learn Three.js by Building 5 Projects](https://www.youtube.com/watch?v=UMqNHi1GDAE&t=3547s)

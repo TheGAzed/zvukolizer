@@ -21,10 +21,6 @@ export abstract class Media {
         this.updateSubtitle();
     }
 
-    public getContext(): Context {
-        return this.context;
-    }
-
     public getSound(): THREE.Audio {
         return this.sound;
     }
@@ -41,7 +37,7 @@ export abstract class Media {
 
     public updateSubtitle(): void {
         const name = this.getName();
-        const visual = this.getContext().getVisual().toString().toUpperCase();
+        const visual = this.context.getVisual().toString().toUpperCase();
 
         const heading = "[" + visual + "] " + name;
         this.subtitle.textContent = this.subtitle.title = heading;
@@ -51,6 +47,5 @@ export abstract class Media {
     public abstract getHtmlControls(): string;
     public abstract handleControls(event: Event): void;
     protected abstract getName(): string;
-
     protected abstract toggle(): void;
 }

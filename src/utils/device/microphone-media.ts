@@ -14,13 +14,13 @@ export class Microphone extends Media {
     private readonly playAnalyser: THREE.AudioAnalyser;
     private readonly stopAnalyser: THREE.AudioAnalyser;
 
-    private isPlaying: boolean = true;
+    private isListening: boolean = true;
 
     constructor(context: Context, sound: THREE.Audio) {
         super(context, sound);
 
         this.playAudio = sound;
-        this.stopAudio = systems_sound(this.getContext().getListener());
+        this.stopAudio = systems_sound(context.getListener());
 
         this.playAnalyser = systems_analyzer(this.playAudio);
         this.stopAnalyser = systems_analyzer(this.stopAudio);
@@ -53,14 +53,14 @@ export class Microphone extends Media {
     }
 
     getSound(): Audio {
-        return this.isPlaying ? this.playAudio : this.stopAudio;
+        return this.isListening ? this.playAudio : this.stopAudio;
     }
 
     getAnalyser(): AudioAnalyser {
-        return this.isPlaying ? this.playAnalyser : this.stopAnalyser;
+        return this.isListening ? this.playAnalyser : this.stopAnalyser;
     }
 
     protected toggle(): void {
-        this.isPlaying = !this.isPlaying;
+        this.isListening = !this.isListening;
     }
 }

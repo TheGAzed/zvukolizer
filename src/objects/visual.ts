@@ -16,7 +16,7 @@ export abstract class Visual {
         this.context = context;
 
         this.scene = core_scene();
-        this.camera = core_camera(context.getRenderer());
+        this.camera = core_camera();
     }
 
     public getAnalyser(): THREE.AudioAnalyser {

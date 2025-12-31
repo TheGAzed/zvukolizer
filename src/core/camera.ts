@@ -1,17 +1,17 @@
 import * as THREE from "three";
 
-export function core_camera(renderer: THREE.WebGLRenderer) {
-    const w = renderer.domElement.width;
-    const h = renderer.domElement.height;
+export function core_camera() {
+    const main = document.getElementById("main")!;
+    const w = main.clientWidth;
+    const h = main.clientHeight;
 
     const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
     camera.position.z = 5; // set coordinate away from scene
 
     window.addEventListener("resize", () => {
-        const width = renderer.domElement.width;
-        const height = renderer.domElement.height;
+        const container = document.getElementById("main")!;
 
-        camera.aspect = width / height;
+        camera.aspect = container.clientWidth / container.clientHeight;
         camera.updateProjectionMatrix();
     });
 

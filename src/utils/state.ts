@@ -39,7 +39,7 @@ export abstract class State<M extends Media> implements StateEdges {
             this.context.setState(new DemoState(this.context, sound));
             this.context.toggleLoading();
         }, undefined, (error) => {
-            this.context.handleError(error);
+            this.context.showError(error);
         });
     }
 
@@ -62,7 +62,7 @@ export abstract class State<M extends Media> implements StateEdges {
             this.context.setState(new FileState(this.context, sound));
             this.context.toggleLoading();
         }, undefined, (error) => {
-            this.context.handleError(error);
+            this.context.showError(error);
             this.context.toggleLoading();
         });
     }
@@ -71,10 +71,15 @@ export abstract class State<M extends Media> implements StateEdges {
         const input = event.target as HTMLInputElement;
         if (!input.files || !input.files.length) return;
 
+        const audioFiles = [...input.files].filter(file => file.type.startsWith("audio/"));
+        if (!audioFiles.length) {
+            this.context.showError(new Error("No audio files found."));
+            return;
+        }
+
         this.context.toggleLoading();
 
-        const list: File[] = Array.from(input.files);
-        const file = list.pop()!;
+        const file = audioFiles.pop()!;
 
         const sound = systems_sound(this.context.getListener());
         sound.name = file.name;
@@ -84,10 +89,10 @@ export abstract class State<M extends Media> implements StateEdges {
             sound.setBuffer(buffer);
             input.value = ''; // remove file from input storage
 
-            this.context.setState(new FolderState(this.context, sound, list));
+            this.context.setState(new FolderState(this.context, sound, audioFiles));
             this.context.toggleLoading();
         }, undefined, (error) => {
-            this.context.handleError(error);
+            this.context.showError(error);
             this.context.toggleLoading();
         });
     }
@@ -103,7 +108,7 @@ export abstract class State<M extends Media> implements StateEdges {
             this.context.setState(new MicrophoneState(this.context, sound));
             this.context.toggleLoading();
         }).catch(error => {
-            this.context.handleError(error);
+            this.context.showError(error);
             this.context.toggleLoading();
         });
     }
