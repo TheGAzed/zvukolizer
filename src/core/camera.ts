@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export function core_camera() {
+export function core_camera(): THREE.PerspectiveCamera {
     const main = document.getElementById("main")!;
     const w = main.clientWidth;
     const h = main.clientHeight;

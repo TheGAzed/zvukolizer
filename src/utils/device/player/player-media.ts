@@ -20,6 +20,10 @@ export abstract class PlayerMedia extends Media {
         this.getSound().isPlaying ? this.stop() : this.play();
     }
 
+    /**
+     * Resets playback for multi-file (folder) media player.
+     * @protected
+     */
     protected resetPlayback(): void {
         this.startTime = 0;
         this.pauseTime = 0;
@@ -30,6 +34,11 @@ export abstract class PlayerMedia extends Media {
         this.addListener();
     }
 
+    /**
+     * Starts playing sound based on delay.
+     * @param delay Delay sound (unused).
+     * @protected
+     */
     protected play(delay?: number): void {
         const sound = this.getSound();
 
@@ -41,6 +50,10 @@ export abstract class PlayerMedia extends Media {
         img.setAttribute("src", "icons/pause.svg");
     }
 
+    /**
+     * Stops playing sound.
+     * @protected
+     */
     protected stop(): void {
         const sound = this.getSound();
 
@@ -51,6 +64,10 @@ export abstract class PlayerMedia extends Media {
         img.setAttribute("src", "icons/play.svg");
     }
 
+    /**
+     * Gets time of playback for player slider position.
+     * @protected
+     */
     protected getPlaybackTime(): number {
         const sound = this.getSound();
         const playbackTime = sound.isPlaying ? sound.context.currentTime - this.startTime : this.pauseTime;
@@ -58,6 +75,10 @@ export abstract class PlayerMedia extends Media {
         return playbackTime % sound.buffer!.duration;
     }
 
+    /**
+     * Updates range to sound if first initialization or after sound change.
+     * @protected
+     */
     protected updateRange(): void {
         const sound = this.getSound();
         const duration = document.getElementById("duration-time")!;
@@ -71,6 +92,10 @@ export abstract class PlayerMedia extends Media {
         return this.getSound().name;
     }
 
+    /**
+     * Slider listener for playback manipulation.
+     * @private
+     */
     private listener(): void {
         const sound = this.getSound();
         const wasPlaying = sound.isPlaying;
@@ -90,16 +115,28 @@ export abstract class PlayerMedia extends Media {
         }
     }
 
+    /**
+     * Adds listener method to slider.
+     * @private
+     */
     private addListener(): void {
         this.slider.addEventListener("input", () => this.listener());
         this.timeout = setInterval(() => this.updateSlider(), 1000);
     }
 
+    /**
+     * Removes listener method from slider.
+     * @private
+     */
     private removeListener(): void {
         this.slider.removeEventListener("input", () => this.listener());
         clearInterval(this.timeout);
     }
 
+    /**
+     * Updates slider current playback time and its thumb position.
+     * @private
+     */
     private updateSlider(): void {
         const sound = this.getSound();
         const current = document.getElementById("current-time")!;
@@ -112,6 +149,11 @@ export abstract class PlayerMedia extends Media {
         }
     }
 
+    /**
+     * Turns generic integer-based time into formated time.
+     * @param seconds Time in seconds to format.
+     * @private
+     */
     private timeFormat(seconds: number): string {
         const formatted = new Intl.DateTimeFormat("en-GB", {
             minute: "2-digit",

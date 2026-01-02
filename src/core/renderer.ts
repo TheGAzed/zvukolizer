@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export function core_renderer() {
+export function core_renderer(): THREE.WebGLRenderer {
     const renderer = new THREE.WebGLRenderer({ antialias: true });
 
     const main = document.getElementById("main")!;

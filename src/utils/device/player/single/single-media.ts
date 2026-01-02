@@ -10,6 +10,7 @@ export abstract class SingleMedia extends PlayerMedia {
         event.preventDefault();
         const submitter = (event as SubmitEvent).submitter as HTMLButtonElement;
 
+        // just handle play/pause
         if (submitter.name == "play") {
             this.toggle();
         }

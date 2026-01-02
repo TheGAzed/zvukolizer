@@ -1,3 +1,5 @@
+// Matej Dedina - state.ts - FST states for each input audio media type.
+
 import { Context } from "@/utils/context"
 
 import { Media } from "@/utils/device/media";
@@ -12,15 +14,34 @@ import { EmptyMedia } from "@/utils/device/empty-media";
 import { FolderMedia } from "@/utils/device/player/folder-media";
 
 interface StateEdges {
+    /**
+     * Go to demo state.
+     */
     onDemo(): void;
+    /**
+     * Go to file state on file input.
+     * @param event Event that triggers file input.
+     */
     onFile(event: Event): void;
+    /**
+     * Go to folder/multi-file state on file input.
+     * @param event Event that triggers multi-file input.
+     */
     onFolder(event: Event): void;
+    /**
+     * Go to microphone state.
+     */
     onMic(): void;
+    /**
+     * Go to MIDI device state.
+     */
     onMIDI(): void;
 }
 
 export abstract class State<M extends Media> implements StateEdges {
+    // context to control errors and subtitle change.
     private readonly context: Context;
+    // media device associated with concrete state.
     private readonly media: M;
 
     protected constructor(context: Context, media: M) {
@@ -117,24 +138,32 @@ export abstract class State<M extends Media> implements StateEdges {
         this.context.setState(new MIDIState(this.context, systems_sound(this.context.getListener())));
     }
 
+    /**
+     * Gets state's media.
+     */
     public getMedia(): M {
         return this.media;
     }
 
+    /**
+     * Method called on state entry after its construction.
+     */
     public entry(): void {
         console.log(this.toString() + " state entry.");
         this.media.initializer();
     }
 
+    /**
+     * Method called on state exit after its construction and entry.
+     */
     public exit(): void {
         console.log(this.toString() + " state exit.");
         this.media.destructor();
     }
 
-    public handleForm(event: Event): void {
-        this.media.handleControls(event);
-    }
-
+    /**
+     * Get string name of concrete state.
+     */
     public abstract toString(): string;
 }
 
@@ -192,9 +221,10 @@ class MicrophoneState extends State<Microphone> {
     }
 }
 
+// TODO: Implement MIDI media state.
 class MIDIState extends State<DemoMedia> {
     constructor(context: Context, sound: THREE.Audio) {
-        const media = new DemoMedia(context, sound);
+        const media = new DemoMedia(context, sound); // not implemented, treat as demo media
         super(context, media);
     }
 

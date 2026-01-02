@@ -16,7 +16,7 @@
 
         <header id="header" class="flex flex-col justify-center lg:h-32 items-center sm:h-64 text-white">
             <h1 id="title" class="lg:text-4xl sm:text-8xl font-bold">ZVUKOLIZER</h1>
-            <small class="lg:text-xs sm:text-xl mb-2">Matej Dedina - KPI FEI TUKE - 2025/2026</small>
+            <small class="lg:text-xs sm:text-xl mb-2">Matej Dedina - PG KPI FEI TUKE - 2025/2026</small>
             <h2 id="subtitle" class="truncate lg:w-100 sm:w-200 lg:text-2xl sm:text-4xl text-center">[GAIA] Joy Division - Disorder</h2>
             <div id="fps"></div>
         </header>
@@ -56,7 +56,7 @@
                 </label>
             </div>
 
-            <form id="side-form" class="flex flex-col lg:w-100 lg:h-30 mb-8 gap-4 sm:w-200 sm:h-60" onsubmit="context.getState().handleForm(event)">
+            <form id="side-form" class="flex flex-col lg:w-100 lg:h-30 mb-8 gap-4 sm:w-200 sm:h-60" onsubmit="context.getState().getMedia().handleControls(event)">
                 <!-- Children Go Here -->
             </form>
         </footer>

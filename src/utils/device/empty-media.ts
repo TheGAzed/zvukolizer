@@ -1,3 +1,5 @@
+// Matej Dedina - context.ts - Context superclass able to manipulate entire application.
+
 import { Media } from "@/utils/device/media";
 import { Context } from "@/utils/context";
 import { systems_sound } from "@/systems/audio/sound";

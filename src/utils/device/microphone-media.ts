@@ -9,16 +9,17 @@ import { systems_sound } from "@/systems/audio/sound";
 import { systems_analyzer } from "@/systems/audio/analyzer";
 
 export class Microphone extends Media {
-    private readonly playAudio: THREE.Audio;
-    private readonly stopAudio: THREE.Audio;
-    private readonly playAnalyser: THREE.AudioAnalyser;
-    private readonly stopAnalyser: THREE.AudioAnalyser;
+    private readonly playAudio: THREE.Audio; // microphone audio input
+    private readonly stopAudio: THREE.Audio; // empty input
+    private readonly playAnalyser: THREE.AudioAnalyser; // microphone audio analyser
+    private readonly stopAnalyser: THREE.AudioAnalyser; // empty input analyser
 
-    private isListening: boolean = true;
+    private isListening: boolean = true; // microphone is registering input
 
     constructor(context: Context, sound: THREE.Audio) {
         super(context, sound);
 
+        // set up microphone and empty audio and analyser
         this.playAudio = sound;
         this.stopAudio = systems_sound(context.getListener());
 

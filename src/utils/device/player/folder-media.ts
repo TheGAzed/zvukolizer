@@ -26,18 +26,30 @@ export class FolderMedia extends PlayerMedia {
         this.loadFiles(context, listener, others).then(undefined);
     }
 
+    /**
+     * Asynchronously load audio files from folder.
+     * @param context Context for error displaying.
+     * @param listener Audio listener for each sound class.
+     * @param files Array of files to load and save into Song array.
+     * @private
+     */
     private async loadFiles(context: Context, listener: THREE.AudioListener, files: File[]): Promise<void> {
         const loader = systems_loader();
 
+        // for each file in files array load it into songs
         for (const file of files) {
-            await new Promise(requestAnimationFrame);
+            await new Promise(requestAnimationFrame); // let app run without this methods interference
 
             try {
+                // load sound asynchronously
                 const buffer = await loader.loadAsync(URL.createObjectURL(file));
                 const audio = systems_sound(listener);
+
+                // set song's name and buffer
                 audio.name = file.name;
                 audio.setBuffer(buffer);
 
+                // push song into songs array
                 this.songs.push({ sound: audio, analyser: systems_analyzer(audio) });
             } catch (e) {
                 context.showError(e);
@@ -47,6 +59,7 @@ export class FolderMedia extends PlayerMedia {
 
     protected play(delay?: number) {
         super.play(delay);
+        // make sure next song is played after current one finished
         this.getSound().source!.onended = () => { this.next(); };
     }
 
