@@ -11,6 +11,8 @@ import { Pontus } from "@/objects/pontus";
 import { Eros } from "@/objects/eros";
 import { Tartarus } from "@/objects/tartarus";
 
+import Stats from 'three/examples/jsm/libs/stats.module.js';
+
 export class Context {
     private readonly listener: THREE.AudioListener;
     // Array of implemented visualisers.
@@ -23,7 +25,12 @@ export class Context {
     // Error body to display errors.
     private readonly error: HTMLElement;
 
+    private readonly stats: Stats = new Stats();
+
     constructor() {
+        this.stats.showPanel(0);
+        document.body.appendChild(this.stats.dom);
+
         // get form of audio controls
         this.form = document.getElementsByTagName("form").item(0)!;
         this.error = document.getElementById("error")!;
@@ -58,10 +65,14 @@ export class Context {
      * Animation loop which renders visuals.
      */
     public animate(): void {
+        this.stats.begin();
+
         const object = this.getVisual(); // retrieve current visual
 
         object.animate(); // call objects animate function
         this.renderer.render(object.getScene(), object.getCamera()); // set render based on its camera nd scene
+
+        this.stats.end();
 
         requestAnimationFrame(() => this.animate());
     }

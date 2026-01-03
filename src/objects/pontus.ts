@@ -1,9 +1,10 @@
-// Matej Dedina - pontus.ts - Lines based on Joy Divison album cover
+// Matej Dedina - pontus.ts - Lines based on Joy Division album cover
 
 import * as THREE from "three";
 
 import vertexShader from "@/shaders/pontus.vert?raw"
-import fragmentShader from "@/shaders/pontus.frag?raw"
+import lineFragmentShader from "@/shaders/pontus.line.frag?raw"
+import planeFragmentShader from "@/shaders/pontus.plane.frag?raw"
 
 import { Visual } from "@/objects/visual";
 import { Context } from "@/utils/context";
@@ -98,10 +99,9 @@ export class Pontus extends Visual {
                 u_time: { value: 0.0 },
                 u_frequency: { value: 0.0 },
                 u_offset: { value: offset },
-                u_color: { value: new THREE.Color(0xFFFFFF) } // set line color to white
             },
             vertexShader: vertexShader,
-            fragmentShader: fragmentShader,
+            fragmentShader: lineFragmentShader,
         });
 
         return new THREE.Mesh(this.lineGeometry, material);
@@ -118,12 +118,10 @@ export class Pontus extends Visual {
                 u_time: { value: 0.0 },
                 u_frequency: { value: 0.0 },
                 u_offset: { value: offset },
-                // set plane color to appear invisible/ blend with background to not display lines behind each other
-                u_color: { value: new THREE.Color(0x030712).convertLinearToSRGB() }
             },
 
             vertexShader: vertexShader,
-            fragmentShader: fragmentShader,
+            fragmentShader: planeFragmentShader,
         });
 
         return new THREE.Mesh(this.planeGeometry, material);
