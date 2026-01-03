@@ -29,7 +29,7 @@ export class Context {
 
     constructor() {
         this.stats.showPanel(0);
-        document.body.appendChild(this.stats.dom);
+        //document.body.appendChild(this.stats.dom);
 
         // get form of audio controls
         this.form = document.getElementsByTagName("form").item(0)!;
