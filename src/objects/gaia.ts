@@ -15,7 +15,7 @@ export class Gaia extends Visual {
     constructor(context: Context) {
         super(context);
 
-        // create icosahedron array with radius, details and amplitude of morphing
+        // create icosahedron array with radius, details and amplitude of warping
         this.icosahedronMeshes = [
             this.icosahedron(2, 1, 0.33),
             this.icosahedron(1.25, 5, 0.66),
@@ -45,7 +45,7 @@ export class Gaia extends Visual {
             this.getRangeValue(2000, 20000), // Treble
         ];
 
-        // set ranges to balls for morphing
+        // set ranges to balls for warping
         for (let i = 0; i < this.icosahedronMeshes.length; i++) {
             const material = this.icosahedronMeshes[i].material as THREE.ShaderMaterial;
 
@@ -93,7 +93,7 @@ export class Gaia extends Visual {
     }
 
     /**
-     * Create icosahedron ball to morph.
+     * Create icosahedron ball to warp.
      * @param radius Ball radius.
      * @param detail Level of detail.
      * @param amplify Amplitude for vertex used as its uniform.

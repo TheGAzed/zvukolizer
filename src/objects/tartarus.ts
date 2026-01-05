@@ -1,4 +1,4 @@
-// Matej Dedina - tartarus.ts - Morphing 2x2x2 cube made up of smaller scaling cubes
+// Matej Dedina - tartarus.ts - Warping 2x2x2 cube made up of smaller scaling cubes
 
 import * as THREE from "three";
 
@@ -47,7 +47,7 @@ export class Tartarus extends Visual {
     }
 
     public animate(): void {
-        // retrieve delta time and audio analyser frequencies for smoother animation and sound morphing
+        // retrieve delta time and audio analyser frequencies for smoother animation and sound warping
         const delta = this.getDelta();
         const frequencies = this.getAnalyser().getFrequencyData();
 
@@ -60,11 +60,11 @@ export class Tartarus extends Visual {
             const freqY = 1 + ((frequencies[(3 * i) + 1] / 255.0) * 1.5) * (Math.random() * 0.5);
             const freqZ = 1 + ((frequencies[(3 * i) + 2] / 255.0) * 1.5) * (Math.random() * 0.5);
 
-            // speed of morphing change
+            // speed of warping change
             const speed = 0.1;
-            child.scale.lerp(child.userData.targetScale, speed); // linearly interpolate scaling (morphing)
+            child.scale.lerp(child.userData.targetScale, speed); // linearly interpolate scaling (warping)
 
-            // condition to let interpolation reach its morphing state and then set a new one
+            // condition to let interpolation reach its warping state and then set a new one
             if (child.scale.distanceTo(child.userData.targetScale) < 0.01) {
                 child.userData.targetScale.set(freqX, freqY, freqZ);
             }

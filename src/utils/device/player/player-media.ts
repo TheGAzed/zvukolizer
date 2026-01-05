@@ -1,3 +1,5 @@
+// Matej Dedina - player-media.ts - Abstract playable audio input media representation.
+
 import { Media } from "@/utils/device/media";
 
 export abstract class PlayerMedia extends Media {

@@ -1,3 +1,5 @@
+// Matej Dedina - microphone-media.ts - Microphone input media representation.
+
 import * as THREE from "three";
 
 import { Media } from "@/utils/device/media";

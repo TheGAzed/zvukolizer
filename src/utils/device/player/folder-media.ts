@@ -1,3 +1,5 @@
+// Matej Dedina - player-media.ts - Playable folder audio input media representation.
+
 import { PlayerMedia } from "@/utils/device/player/player-media";
 import * as THREE from "three";
 

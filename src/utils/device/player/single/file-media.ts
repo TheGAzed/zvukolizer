@@ -1,3 +1,5 @@
+// Matej Dedina - single-media.ts - Playable file audio input media representation.
+
 import * as THREE from "three";
 
 import { SingleMedia } from "@/utils/device/player/single/single-media";
